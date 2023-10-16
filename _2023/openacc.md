@@ -1,12 +1,12 @@
 ---
 layout: lecture
-date: 2023-03-21
+date: 2023-02-04
+title: openACC
+description: Open Accelerator
 ready: true
 video:
   aspect: 56.25
   id: e8BO_dYxk5c
-title: openACC
-description: Open Accelerator
 ---
 
 

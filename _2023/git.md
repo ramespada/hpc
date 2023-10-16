@@ -1,6 +1,6 @@
 ---
 layout: lecture
-date: 2023-02-14
+date: 2023-01-05
 title: Git
 description: Control de versiones
 ready: true

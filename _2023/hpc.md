@@ -1,9 +1,9 @@
 ---
+layout: lecture
+date: 2023-02-01
 title: HPC
 description: Computación de alto desempeño.
 nav_order: 6
-layout: lecture
-date: 2023-03-01
 ready: true
 video:
   aspect: 56.25

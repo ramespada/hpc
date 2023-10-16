@@ -1,6 +1,6 @@
 ---
 layout: lecture
-date: 2023-02-01
+date: 2023-01-04
 title: Makefiles
 description: Compilar progrmas usando Makefiles
 ready: true

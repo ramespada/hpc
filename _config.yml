@@ -12,12 +12,10 @@ permalink: /:title/
 future: true
 # safe: true # breaks local rendering if enabled
 timezone: America/Argentina/Buenos_Aires
-analytics:
+#analytics:
 #  tracking_id: G-P7WVHD84D1
 
 collections:
-  '2020':
-    output: false
   '2023':
     output: true
 
