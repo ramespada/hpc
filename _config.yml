@@ -1,6 +1,6 @@
 # Setup
-title: 'Missing Semester'
-url: https://ramespada.github.io
+title: 'HPC'
+url: https://ramespada.github.io/hpc
 
 # Settings
 markdown: kramdown
@@ -11,13 +11,13 @@ highlighter: rouge
 permalink: /:title/
 future: true
 # safe: true # breaks local rendering if enabled
-timezone: America/New_York
+timezone: America/Argentina/Buenos_Aires
 analytics:
 #  tracking_id: G-P7WVHD84D1
 
 collections:
   '2020':
-    output: true
+    output: false
   '2023':
     output: true
 
