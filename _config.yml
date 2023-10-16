@@ -1,0 +1,29 @@
+# Setup
+title: 'Missing Semester'
+url: https://ramespada.github.io
+
+# Settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+highlighter: rouge
+permalink: /:title/
+future: true
+# safe: true # breaks local rendering if enabled
+timezone: America/New_York
+analytics:
+#  tracking_id: G-P7WVHD84D1
+
+collections:
+  '2020':
+    output: true
+  '2023':
+    output: true
+
+# Excludes
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
