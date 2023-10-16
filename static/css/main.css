@@ -349,7 +349,7 @@ input[type=checkbox]:checked ~ .menu-label:after {
       }
 
     #nav-bg, a#logo, #top-nav a {
-      background-color: #A6E22E;
+      background-color: #66D9EF;/*#75aadb;*//*#A6E22E;*/
       color: #202020;
     }
 

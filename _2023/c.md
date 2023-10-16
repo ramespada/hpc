@@ -2,7 +2,7 @@
 layout: lecture
 title: C
 description: Sintaxis básica de C.
-date: 2023-01-21
+date: 2023-01-07
 ready: true
 video:
   aspect: 56.25

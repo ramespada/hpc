@@ -1,0 +1,418 @@
+<h1 id="openmp">OpenMP</h1>
+
+<blockquote>
+  <p><strong>OpenMP</strong> (<em>Open Multi-Processing</em>) es una un conjunto de comandos y rutinas, portables y escalables, que permite la paralelización de tareas dentro de un programa. Trabaja con paralelización <strong>multi-threaded</strong> y <strong>shared memory</strong> (de memoria compartida). Sus objetivo es ser <em>estandarizado</em> , <em>portable</em> , <em>discreto</em>, <em>eficiente</em> y <em>fácil</em> de usar. Tiene soporte para Fortran y C/C++.</p>
+</blockquote>
+
+<p>Sus componentes principales son:</p>
+<ol>
+  <li><strong>Instrucciones para el compilador</strong>
+    <ul>
+      <li>Aparecen como comentarios en el código y son ignorados por el compilador en caso de no estar usando <em>openMP</em>.</li>
+      <li>Se utilizan para:</li>
+      <li>Delimitar las partes del código a ser paralelizadas.</li>
+      <li>Crear bloques entre threads</li>
+      <li>Distribuir iteraciones de loops entre threads.</li>
+      <li>Serializar partes del código. Sincronizar los threads.</li>
+    </ul>
+  </li>
+  <li><strong>Librerías con rutinas en tiempo real/de corrida</strong>
+    <ul>
+      <li>Aparecen como funciones ó subrutinas.</li>
+      <li>Se utilizan para:</li>
+      <li>setear y consultar numero de threads.</li>
+      <li>Consultar información de threads particulares.</li>
+      <li>Setear paralelismo anidado.</li>
+      <li>Setear, inicializar y terminar <em>locks</em></li>
+    </ul>
+  </li>
+  <li><strong>Variables de ambiente</strong>
+    <ul>
+      <li>Se pueden setear en el código ó fuera de él.</li>
+      <li>Se utilizan para:</li>
+      <li>Setear numero de threads.</li>
+      <li>Especificar como serán divididas las iteraciones de un loop entre threads.</li>
+      <li><em>Atar</em> threads a procesadores.</li>
+      <li>Habilitar/deshabilitar paralelismo anidado.</li>
+      <li>Habiitar/deshabilitar threads dinámicos.</li>
+      <li>Setear tamaño de <em>thread stack</em>.</li>
+      <li>Setear la política de espera de threads.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="definiciones">Definiciones:</h3>
+<ul>
+  <li><strong>Modelo de memoria compartida</strong>: multiples procesadores tienen acceso al mismo espacio de memoria.</li>
+  <li><strong>Proceso</strong>: Unidad de ejecución independiente. Tiene su propio estado y su <em>address-space</em></li>
+  <li><strong>Thread</strong>: Cada proceso puede tener varios <em>threads</em>. Todos los threads de un proceso comparten <em>estado</em> y <em>address-space</em></li>
+  <li>Modelo <strong>Fork-Join</strong></li>
+</ul>
+
+<h4 id="ejemplo-simple-hola-mundo">Ejemplo simple: Hola mundo</h4>
+
+<p>OpenMP ya está incluido en la mayoría de los compiladores comunmente utilizados, por lo que no requiere ninguna compilación ni instalación.</p>
+
+<p>Un programa “Hola mundo” en fortran sería:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">program</span><span class="w"> </span><span class="n">hola</span><span class="w">
+  </span><span class="k">use</span><span class="w"> </span><span class="n">omp_lib</span><span class="w">
+  </span><span class="c1">!$omp parallel </span><span class="w">
+     </span><span class="k">print</span><span class="w"> </span><span class="s1">'("Hello world! ",I0,"/",I0)'</span><span class="p">,</span><span class="n">omp_get_thread_num</span><span class="p">(),</span><span class="n">omp_get_num_threads</span><span class="p">()</span><span class="w">
+  </span><span class="c1">!$omp end parallel</span><span class="w">
+</span><span class="k">end</span><span class="w"> </span><span class="k">program</span><span class="w">
+</span></code></pre></div></div>
+
+<p>En C sería:</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+   <span class="cp">#pragma omp parallel
+</span>   <span class="p">{</span>
+        <span class="c1">//printf("Hola mundo!\n");</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Hola mundo! %d/%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">omp_get_thread_num</span><span class="p">(),</span><span class="n">omp_get_num_threads</span><span class="p">());</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Al compilar, para que el script soporte <em>openMP</em> hay que agregar un comando para habilitarlo, para GNU es:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> gfortran <span class="nt">-fopenmp</span> hola_omp.f90
+</code></pre></div></div>
+
+<p>Para correr un programa compilado con openMP primero hay que indicar el numero de threads y luego ejecutarlo</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span>4
+./a.out
+</code></pre></div></div>
+
+<h3 id="regiones-paralelas">Regiones paralelas:</h3>
+
+<p>Para indicar que comienza una porción del código a ser corrido en paralelo se indica:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">!$omp parallel</span><span class="w">
+  </span><span class="c1">!(Acá va la region paralela)</span><span class="w">
+</span><span class="c1">!$omp end parallel</span><span class="w">
+</span></code></pre></div></div>
+<p>Lo que queda encerrado entre ese bloque se paraleliza. En esta región del código se asigna un <strong>thread master</strong> y varios <strong>slave threads</strong>.</p>
+
+<h4 id="interacción-entre-threads">Interacción entre threads**</h4>
+
+<ul>
+  <li>Entre threads se comunican utilizando variables compartidas (<em>shared variables</em>).</li>
+  <li>Los threads comunmente necesitan algun espacio de trabajo privado junto con variables compartidas (por ejemplo el indice de un loop).</li>
+  <li>La visibilidad de diferentes variables es definida usando clausulas de datos compartidos (<em>data sharing clauses</em>) en la region paralela.</li>
+</ul>
+
+<h4 id="almacenamiento-default">Almacenamiento default</h4>
+<ul>
+  <li>Por default las variables son compartidas.</li>
+  <li>Las variables globales son compartidas.</li>
+  <li>Variables privadas: aquellas definidas dentro de la region paralela, y variables automaticas dentro de un bloque.</li>
+</ul>
+
+<p>Atributos de compartición de datos:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">private(*lista*)</code> Pertenece a cada thread, y poseé valor inicial indefinido y valor final indefinido.</li>
+  <li><code class="language-plaintext highlighter-rouge">firstprivate()</code> Igual a <code class="language-plaintext highlighter-rouge">private</code> sólo que comienza con un valor incial, definido afuera de la region paralela.</li>
+  <li><code class="language-plaintext highlighter-rouge">lastprivate()</code> Igual que <code class="language-plaintext highlighter-rouge">private</code>pero sale con un valor definido en la última iteración de la region paralela.</li>
+  <li><code class="language-plaintext highlighter-rouge">shared()</code> Variables compartidas, todos los threads pueden leer y editarlas. (Por default todas las variables son compartidas).</li>
+  <li><code class="language-plaintext highlighter-rouge">thradprivate()</code> Variable global privada. Usada para hacer privada a cada thread variables globales.</li>
+  <li><code class="language-plaintext highlighter-rouge">copyin()</code> Cioauar valores del master thread a los otros threads.</li>
+</ul>
+
+<p>Se puede definir por default que usar: <code class="language-plaintext highlighter-rouge">default(private/shared/none)</code></p>
+
+<h2 id="comandos-de-trabajo-compartido">Comandos de trabajo compartido</h2>
+<p>Las regiones paralelas crean un programa simple de datos multiples donde cada thread ejecuta el mismo codigo.</p>
+
+<p>Para dividir el trabajo entre threads en una region paralela pueden utilizarse:</p>
+<ol>
+  <li><em>Loops</em></li>
+  <li><em>Secciones</em></li>
+  <li><em>Taks</em></li>
+  <li><em>Workshare</em></li>
+</ol>
+
+<h3 id="loop">Loop</h3>
+<p>Para hacer que se comparta el trabajo de un loop.</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">!$OMP DO</code>  (debe estar adentro de una región paralela)</li>
+  <li><code class="language-plaintext highlighter-rouge">!$OMP DO PARALLEL </code>  (combinar loop con parallel)</li>
+  <li>Los indices de cada loop son privados por default.</li>
+</ul>
+
+<p>El trabajo compartido puede ser controlado utilizando las clausulas de <code class="language-plaintext highlighter-rouge">schedule()</code> (esquema)</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">schedule(*static[,n]*)</code> bloques de iteraciones de tamaño <em>n</em> para cada thread.</li>
+  <li><code class="language-plaintext highlighter-rouge">schedule(*dynamic[,n]*)</code> <em>n</em> iteraciones de una cola hasta que todo esté realizado.</li>
+  <li><code class="language-plaintext highlighter-rouge">schedule(*guided[,n]*)</code> threads  agarran bloques de iteraciones. El tamño de los bloques empiezan de mayor tamaño hasta n.</li>
+  <li><code class="language-plaintext highlighter-rouge">schedule(*runtime*)</code> El esquema y <em>n</em> son tomados de la variable <em>OMP_SCHEDULE</em></li>
+</ul>
+
+<h4 id="reducción">Reducción</h4>
+
+<p><em>Race conditions</em>: Ocurren cuando multiples threads leen y escriben una misma variable simultaneamente.
+Esto produce resultados aleatorios dependiendo del orden de acceso de los threads.</p>
+
+<p>Ejemplo:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">asum</span><span class="o">=</span><span class="mf">0.0</span><span class="w">
+</span><span class="c1">!$OMP PARALLEL DO SHARED(x,y,n,asum) PRIVATE(i)</span><span class="w">
+</span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w">
+      </span><span class="n">asum</span><span class="o">=</span><span class="w"> </span><span class="n">asum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w">
+</span><span class="k">end</span><span class="w"> </span><span class="k">do</span><span class="w">
+</span><span class="c1">!$OMP END PARALLEL DO </span><span class="w">
+</span></code></pre></div></div>
+
+<p>Por lo tanto se necesita algún mecanísmo para controlar el acceso.
+<code class="language-plaintext highlighter-rouge">reduction(operador:lista)</code></p>
+<ul>
+  <li>Realiza reducción en la variable de la lista.</li>
+  <li>Una variable de reducción privada se crea en cada resultado parcial del thread.</li>
+  <li>Una variable privada de reducción es inicializada al valor inicial del operador.</li>
+  <li>Despues de la region paralela la reducción se aplica a las variables privadas y el resultado se agrega a la variable compartida.</li>
+  <li>Operadores (<code class="language-plaintext highlighter-rouge">+</code>, <code class="language-plaintext highlighter-rouge">-</code>, <code class="language-plaintext highlighter-rouge">*</code>, <code class="language-plaintext highlighter-rouge">.AND.</code>,<code class="language-plaintext highlighter-rouge">.OR.</code>, <code class="language-plaintext highlighter-rouge">.NEGV.</code>, <code class="language-plaintext highlighter-rouge">.IEOR.</code>, <code class="language-plaintext highlighter-rouge">.IOR.</code>, <code class="language-plaintext highlighter-rouge">.IAND.</code>, <code class="language-plaintext highlighter-rouge">.EQV.</code>, <code class="language-plaintext highlighter-rouge">MIN</code>, <code class="language-plaintext highlighter-rouge">MAX</code>)</li>
+</ul>
+
+<p>Ejemplo:</p>
+
+<p><code class="language-plaintext highlighter-rouge">fortran
+!$OMP PARALLEL DO SHARED(x,y,n,asum) PRIVATE(i) REDUCTION(+:asum)
+do i=1, n
+    asum= asum + x(i)*y(i)
+end do
+!$OMP END PARALLEL DO 
+</code></p>
+
+<h4 id="buenas-prácticas">Buenas prácticas:</h4>
+<ul>
+  <li>Maximizar/Optimizar regiones paralelas, es decir, reducir numero de llamadas a regiones paralelas (<em>fork-join overhead</em>)</li>
+  <li>Paralelizar todos los loops que sean posibles.</li>
+  <li>Reducir acceso a datos compartidos.</li>
+  <li>Para controlar <em>race conditions</em> usar sincronización para evitar confictos de datos</li>
+  <li>Cambiar como acceder a los datos para evitar necesidad de sincronización.</li>
+</ul>
+
+<h3 id="secciones">Secciones</h3>
+
+<p>Ejecución paralela de regiones de codigo independientes, cada una con un thread: <code class="language-plaintext highlighter-rouge">!$OMP SECTIONS</code> <code class="language-plaintext highlighter-rouge">!$OMP SECTION</code></p>
+
+<p>Comunmente usado para asignar diferentes llamadas a subrutinas a diferentes threads.</p>
+
+<p>Dificil de cargar balancce</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">!$OMP PARALLEL</span><span class="w">
+  </span><span class="c1">!$OMP SECTIONS</span><span class="w">
+      </span><span class="c1">!$omp section</span><span class="w">
+        </span><span class="k">call</span><span class="w"> </span><span class="n">do_a</span><span class="p">()</span><span class="w">
+      </span><span class="c1">!$omp section</span><span class="w">
+        </span><span class="k">call</span><span class="w"> </span><span class="n">do_b</span><span class="p">()</span><span class="w">
+      </span><span class="c1">!$omp section</span><span class="w">
+        </span><span class="k">call</span><span class="w"> </span><span class="n">do_c</span><span class="p">()</span><span class="w">
+  </span><span class="c1">!$OMP END SECTIONS</span><span class="w">
+</span><span class="c1">!$OMP END PARALLEL</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="tasks">Tasks</h3>
+<p>Asignar tasks (tareas) a cada thread <code class="language-plaintext highlighter-rouge">!$OMP TASK</code>
+Cada task tiene:</p>
+<ul>
+  <li>Código que ejecutar.</li>
+  <li>Datos de entorno.</li>
+  <li>Un thread que lo ejecute.</li>
+</ul>
+
+<p>La cola de taks es manejada por <em>ompenMP</em> runtime</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">integer</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">a</span><span class="w">
+
+</span><span class="k">subroutine</span><span class="w"> </span><span class="n">foo</span><span class="p">()</span><span class="w">
+    </span><span class="kt">integer</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w">
+    </span><span class="c1">!$OMP PARALLEL firstprivate(b)</span><span class="w">
+    </span><span class="c1">!$OMP TASK SHARED(c)</span><span class="w">
+      </span><span class="k">call</span><span class="w"> </span><span class="n">bar</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span><span class="w">
+    </span><span class="c1">!$OMP END TASK</span><span class="w">
+    </span><span class="c1">!$OMP END PARALLEL</span><span class="w">
+</span><span class="k">end</span><span class="w"> </span><span class="k">subroutine</span><span class="w"> </span><span class="n">foo</span><span class="w">
+
+</span><span class="k">subroutine</span><span class="w"> </span><span class="n">bar</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span><span class="w">
+  </span><span class="kt">integer</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="w">
+    </span><span class="c1">! scope of a: shared</span><span class="w">
+    </span><span class="c1">! scope of b: firstprivate</span><span class="w">
+    </span><span class="c1">! scope of c: shared</span><span class="w">
+    </span><span class="c1">! scope of d: private</span><span class="w">
+</span><span class="k">subroutine</span><span class="w"> </span><span class="n">bar</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">integer</span><span class="w"> </span><span class="n">x</span><span class="w">
+
+</span><span class="c1">!$OMP PARALLEL</span><span class="w">
+  </span><span class="c1">!$OMP SINGLE</span><span class="w">
+    </span><span class="n">x</span><span class="o">=</span><span class="w"> </span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w">
+  </span><span class="c1">!$OMP END SINGLE</span><span class="w">
+
+</span><span class="c1">!$OMP END PARALLEL</span><span class="w">
+  </span><span class="k">contains</span><span class="w">
+  </span><span class="k">recursive</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="w">
+    </span><span class="kt">integer</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">fnm</span><span class="p">,</span><span class="w"> </span><span class="n">fn</span><span class="w">
+    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+    </span><span class="n">fn</span><span class="o">=</span><span class="n">n</span><span class="w">
+    </span><span class="k">return</span><span class="w"> 
+    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">)</span><span class="w">
+      </span><span class="n">fn</span><span class="w"> </span><span class="n">fibo_secuencial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="c1">!Una funcion secuencial de fibonacci</span><span class="w">
+      </span><span class="k">return</span><span class="w">
+    </span><span class="k">end</span><span class="w"> </span><span class="k">if</span><span class="w">
+
+    </span><span class="c1">!$OMP TASK SHARED(fn)</span><span class="w">
+      </span><span class="n">fn</span><span class="o">=</span><span class="w"> </span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="mi">-1</span><span class="p">)</span><span class="w">
+    </span><span class="c1">!$OMP END TASK</span><span class="w">
+    </span><span class="c1">!$OMP TASK shared(fnm)</span><span class="w">
+    </span><span class="n">fnm</span><span class="o">=</span><span class="w"> </span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="mi">-2</span><span class="p">)</span><span class="w">
+    </span><span class="c1">!$OMP END TASK</span><span class="w">
+    </span><span class="c1">!$OMP TASKWAIT</span><span class="w">
+    </span><span class="n">fn</span><span class="o">=</span><span class="w"> </span><span class="n">fn</span><span class="o">+</span><span class="n">fnm</span><span class="w">
+  </span><span class="k">end</span><span class="w"> </span><span class="k">function</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="workshare-construct">Workshare construct</h3>
+<p><code class="language-plaintext highlighter-rouge">!$OMP WORKSHARE</code>
+Restricción: el bloque de código solo puede contenter:</p>
+<ul>
+  <li>asignaciones con arrays y escalares.</li>
+  <li>comandos <code class="language-plaintext highlighter-rouge">forall()</code> y <code class="language-plaintext highlighter-rouge">where()</code></li>
+  <li>comandos <em>openMP</em>: <code class="language-plaintext highlighter-rouge">atomic</code>, <code class="language-plaintext highlighter-rouge">critical</code> y <code class="language-plaintext highlighter-rouge">parallel</code></li>
+  <li>(No puede llamar a funciones (salvo <em>ELEMEMENTAL</em>)</li>
+</ul>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">real</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span><span class="w">
+</span><span class="k">call</span><span class="w"> </span><span class="nb">random_number</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="w">
+</span><span class="c1">!$OMP PARALLEL_SHARED(A,B)</span><span class="w">
+</span><span class="c1">!$OMP WORKSHARE</span><span class="w">
+  </span><span class="k">where</span><span class="w"> </span><span class="p">(</span><span class="n">A</span><span class="o">&lt;</span><span class="mf">0.5</span><span class="p">)</span><span class="w">
+    </span><span class="n">B</span><span class="o">=</span><span class="mf">0.0</span><span class="w">
+  </span><span class="k">elsewhere</span><span class="w">
+    </span><span class="n">B</span><span class="o">=</span><span class="mf">1.0</span><span class="w">
+  </span><span class="k">end</span><span class="w"> </span><span class="k">where</span><span class="w">
+</span><span class="c1">!$OMP END WORKSHARE</span><span class="w">
+</span><span class="c1">!$OMP END PARALLEL</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="sincronización">Sincronización</h2>
+<p>Aveces parte de la region paralela debe ser ejecutada sólo por el <em>master thread</em> ó por un solo thread a la vez.
+(I/O inicialización, actualización de valores globales, etc.)</p>
+
+<p><em>OpenMP</em> provée de clausulas para controlar la ejecución de bloques de código.</p>
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">barrier</code></strong> Espera a que todos los threads terminen para continuar.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">critical</code></strong> (mutual exclusión). Crea una sección crítica: zona que debe ser ejecutada por cada thread a la vez.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">atomic</code></strong> Actualiza un valor determinado.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">orderer</code></strong> Sincroniza todos los threads en ese punto.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">master</code></strong> Zona que sdebe ser ejecutada sólo por el <em>master</em></li>
+  <li><strong><code class="language-plaintext highlighter-rouge">single</code></strong> Zona que debe ser ejecutada por sólo un thrad (arbitrario)</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">flush</code></strong> Sincroniza la memoria de todos los threats.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">nowait</code></strong></li>
+</ul>
+
+<h3 id="variables-de-entorno">Variables de entorno</h3>
+
+<p><em>OpenMP</em> provée de varias formas para interactuar con el entorno de ejecución, estas operaciones incluyen :</p>
+<ul>
+  <li>seteo de numero de threads por region paralela.</li>
+  <li>pedido de numero de cpus.</li>
+  <li>cambiar el schedule default de trabajo.</li>
+</ul>
+
+<p>Hay una serie de variables de entorno que hay que setear:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">OMP_SCHEDULE</code></li>
+  <li><code class="language-plaintext highlighter-rouge">OMP_NUM_THREADS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">OMP_DYNAMIC</code></li>
+  <li><code class="language-plaintext highlighter-rouge">OMP_PROC_BIND</code></li>
+  <li><code class="language-plaintext highlighter-rouge">OMP_NESTED</code></li>
+  <li><code class="language-plaintext highlighter-rouge">OMP_STACKSIZE</code></li>
+  <li><code class="language-plaintext highlighter-rouge">OMP_WAIT_POLICY</code></li>
+  <li><code class="language-plaintext highlighter-rouge">OMP_MAX_ACTIVE_LEVELS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">OMP_THREAD_LIMIT</code></li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">omp_lib</code>
+<code class="language-plaintext highlighter-rouge">omp_get_num_threads()</code>
+<code class="language-plaintext highlighter-rouge">omp_get_thread_num()</code></p>
+
+<h2 id="control-de-ejecución-locks-y-paralelismo-anidado">Control de ejecución: <em>LOCKS</em> y paralelismo anidado</h2>
+<p>Hay dos tipos de <strong>locks</strong>: <em>simple</em> y <em>anidado</em></p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">omp_lock_kind</span><span class="p">)</span><span class="w"> </span><span class="n">svar</span><span class="w">
+</span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">omp_nest_lock_kind</span><span class="p">)</span><span class="w"> </span><span class="n">svar</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Los locks habilitan:</p>
+<ul>
+  <li>implementación de comportamiento asincrónico.</li>
+  <li>control de ejecución no-estructurada.
+Debe ser manipulada sólo desde OpenMP.
+Si no se inicializa el comportamiento es indefinido.</li>
+</ul>
+
+<p>Los <em>locks</em> proveen funcionalidades análogas a semáforos</p>
+
+<p>Sintaxis: su  <code class="language-plaintext highlighter-rouge">subroutine OMP_(init/set/destroy)_LOCK(svar)</code>  <code class="language-plaintext highlighter-rouge">subroutine OMP_(init/set/destroy)_nest_LOCK(svar)</code></p>
+
+<p>Workflow:</p>
+<ol>
+  <li>Definir una variable <em>lock</em></li>
+  <li>Inicializar con <code class="language-plaintext highlighter-rouge">omp_init_lock</code></li>
+  <li>setear con <code class="language-plaintext highlighter-rouge">omp_set_lock</code> ó <code class="language-plaintext highlighter-rouge">omp_test_lock</code></li>
+  <li>Liberar con <code class="language-plaintext highlighter-rouge">omp_unset_lock</code></li>
+  <li>Destruir con <code class="language-plaintext highlighter-rouge">omp_destroy_lock</code></li>
+</ol>
+
+<p>Ejemplo:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">omp_lock_kind</span><span class="p">)</span><span class="w"> </span><span class="k">lock</span><span class="w">
+  </span><span class="k">call</span><span class="w"> </span><span class="n">omp_init_lock</span><span class="p">(</span><span class="k">lock</span><span class="p">)</span><span class="w">
+</span><span class="c1">!$OMP PARALLEL</span><span class="w">
+  </span><span class="k">do</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="ow">.not.</span><span class="w"> </span><span class="n">omp_test_lock</span><span class="p">(</span><span class="k">lock</span><span class="p">))</span><span class="w">
+    </span><span class="c1">!Hacer algo</span><span class="w">
+  </span><span class="k">end</span><span class="w"> </span><span class="k">do</span><span class="w">
+</span><span class="c1">!call omp_unset_lock(lock)</span><span class="w">
+</span><span class="c1">!$OMP END PARALLEL</span><span class="w">
+</span><span class="k">call</span><span class="w"> </span><span class="n">omp_destroy_lock</span><span class="p">(</span><span class="k">lock</span><span class="p">)</span><span class="w">
+
+</span></code></pre></div></div>
+
+<h2 id="hardware">Hardware</h2>
+
+<h3 id="jerarquía-de-memoria-afinidad">Jerarquía de memoria, afinidad</h3>
+
+<p>Las computadoras de memoria compartida (<em>shared memory</em>) pueden ser de dos tipos:</p>
+<ul>
+  <li><em>Simetric Multi-Procesor</em> (<strong>SMP</strong>): Tiene más de una CPU por nodo.
+    <ul>
+      <li>La memoria es accesible para todos los procesadores y con el mismo tiempo de acceso (latencia).</li>
+      <li>Menor costo debido a que comparten conectores y <em>peripherals</em></li>
+      <li>Mayor rápidez en la comunicación entre sockets.</li>
+      <li>Mayor memoria compartida para programas híbridos.</li>
+    </ul>
+  </li>
+  <li><em>Non-Uniform Memory Access</em> (<strong>NUMA</strong>)
+    <ul>
+      <li>Toda la memoria es accesible pero la latencia y el ancho de banda puede variar.</li>
+      <li>Diferentes regiones de la memoria tienen distinto tiempo de acceso (memoria “cercana” y “lejana”).</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Afinidad
+Los S.O asignan threads y procesos a determinados nucleos. Por ejemplo, en linux por default se utiliza <em>soft affinity</em> (el SO intenta evitar mover threads de un nucleo a otro.)
+Para la mayor eficiencia computacional es util asociar (<em>pin</em>) threads a nucleos especificos.
+Para configurar afinidad en GNU se utiliza: <code class="language-plaintext highlighter-rouge">GOMP_CPU_AFFINITY ="0-6"</code></p>
+
+<h3 id="coherencia-del-cache--false-sharing">Coherencia del <em>cache</em>  (<em>false sharing</em>)</h3>
+<p>Los caches de las nuevas CPUs son complejos. Los datos son leidos/escritos como lineas de cache enteras (generalmente 64bits)
+Los modelos de programación requiren que la información en la memoria sea consistente (un address solo puede tener un valor).</p>
+
+<p>Cuando diferentes threads modificas ubicación en memoria sucesivamente, la coeherencia del cache forza estas actualizaciones a ser transferidas entre todas las copias de cache. Si esto ocurre en una rapida sucesión hay una penalidad muy grande en la performance debido a perdidas de caches.
+Para evitarlo, reorganizar el acceso a los datos de forma tal que cada thread modifique valores dentro de un bloque más grande, ó usar variables privadas. (Esto no ocurre cuando los datos son solo leídos).</p>
+
+<p>SPMD:
+Worksharing:</p>

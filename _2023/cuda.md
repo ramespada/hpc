@@ -2,7 +2,7 @@
 layout: lecture
 title: CUDA
 description: GPU con CUDA
-date: 2023-01-21
+date: 2023-03-21
 ready: true
 video:
   aspect: 56.25

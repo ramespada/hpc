@@ -1,0 +1,965 @@
+<h1 id="fortran">Fortran</h1>
+
+<blockquote>
+  <p>Fortran es un lenguaje de programación de alto nivel de propósito general, procedimental e imperativo, que está especialmente adaptado al cálculo numérico y a la computación científica.</p>
+</blockquote>
+
+<h2 id="hola-mundo">Hola mundo!</h2>
+<p>Para escribir un programa en fortran es necesario abrir con un editor de textos un archivo en blanco, y guardarlo con extensión <code class="language-plaintext highlighter-rouge">.f90</code> y adentro de este escribir el código, por ejemplo:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">program</span><span class="w"> </span><span class="n">nombre_del_programa</span><span class="w">
+
+	</span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="s2">"Hola mundo!"</span><span class="w">
+
+</span><span class="k">end</span><span class="w"> </span><span class="k">program</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="compilación-y-ejecución">Compilación y ejecución:</h2>
+<p>Si el programa anterior lo hubieramos guardado en el archivo <code class="language-plaintext highlighter-rouge">00holamundo.f90</code>, entonces para compilarlo (usando <code class="language-plaintext highlighter-rouge">gfortran</code>) abrimos una terminal (<code class="language-plaintext highlighter-rouge">ctrl</code>+<code class="language-plaintext highlighter-rouge">T</code>, en linux), vamos al directorio donde guardamos el archivo de texto y escribir en la terminal:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> gfortran 00holamundo.f90
+</code></pre></div></div>
+
+<p>se va a crear un archivo ejecutable con nombre <code class="language-plaintext highlighter-rouge">a.out</code>, este se puede ejecutar escribiendo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> ./a.out
+</code></pre></div></div>
+
+<p>Si quisieramos que nuestro programa tenga otro nombre al compilar debemos escribir: <code class="language-plaintext highlighter-rouge">gfortran 00holamundo.f90 -o mi_programa.exe</code>.</p>
+
+<h2 id="estructura-de-un-programa-en-fortran">Estructura de un programa en fortran</h2>
+
+<p>Ya vimos todos los programas comienzan en <code class="language-plaintext highlighter-rouge">program nombre_del_programa</code>, y finalizan en <code class="language-plaintext highlighter-rouge">end program</code>, dentro de estas dos instrucciones vamos a escribir las intrucciones del programa.</p>
+
+<h3 id="comentarios">Comentarios</h3>
+<p>Los <em>comentarios</em> son partes del código que <strong>no</strong> se ejecutan, sirven simplemente para dejar mensajes a quienes lean el código en el futuro, y facilitar la comprensión del mismo. En FORTRAN los comentarios se realizan con el símbolo de exclamación (<strong>!</strong>), por ejemplo:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">        </span><span class="c1">!Esto es un comentario</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="variables-y-declaración-de-variables">Variables y declaración de variables</h3>
+<p>Las <em>variables</em> son los objetos en los que guardamos información (números, palabras, etc.). El primer paso en todo programa es definir cuáles son las variables (como se llaman) que serán utilizadas por el programa y cual es su <em>tipo</em> .</p>
+
+<h4 id="implicit-none"><em>implicit none</em></h4>
+<p>Antes de declarar las variables vamos a colocar la sentencia <strong><code class="language-plaintext highlighter-rouge">implicit none</code></strong>. Esto lo que hace es obligarnos a definir explicitamente todas las variables que serán utiliadas por el programa (caso contrario fortran las define por nosotros en base al nombre que les pongamos, utilizando un criterio qua es confuso y por lo tanto nadie usa).</p>
+
+<p>En la declaración de una variable, primero especificamos de qué <em>tipo</em> de variable se trata (más adelante veremos que tipos existen), y su nombre, separados por <strong>::</strong>. Por ejemplo:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">          </span><span class="k">implicit</span><span class="w"> </span><span class="k">none</span><span class="w">
+          </span><span class="kt">integer</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">n</span><span class="w">    </span><span class="c1">!defino un entero llamado "n"</span><span class="w">
+          </span><span class="kt">real</span><span class="w">    </span><span class="p">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="w">  </span><span class="c1">!defino dos reales llamados "x" e "y"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>se pueden declarar multiples variables en una linea (separandolas por <em>’,’</em>) y los nombres pueden ser letras ó palabras (recuerden que fortran no distingue entre mayúscula y minúscula!)</p>
+
+<h3 id="iniciar-variables">Iniciar variables</h3>
+<p>A las variables podemos asignarles valores, esto se realiza con el signo <strong><code class="language-plaintext highlighter-rouge">=</code></strong>. Por ejemplo podemos asignarle a <strong>n</strong> un valor entero (<code class="language-plaintext highlighter-rouge">n=3</code>). Esta asignación se puede realizar cuando se definen las variables, ó luego, en el cuerpo del programa.</p>
+
+<h3 id="cuerpo-del-programa">Cuerpo del programa</h3>
+<p>Luego de definir las variables podemos realizar acciones con ellas. Por ejemplo, hagamos un programa que pida el nombre del usuario, lo guarde en una variable y luego lo muestre en pantalla, se escribiria:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">      </span><span class="k">program</span><span class="w"> </span><span class="n">nombre_del_programa</span><span class="w">
+
+        </span><span class="c1">!Definición de variables:</span><span class="w">
+          </span><span class="k">implicit</span><span class="w"> </span><span class="k">none</span><span class="w">
+          </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">nombre</span><span class="w">
+
+        </span><span class="c1">!Cuerpo del progrma:</span><span class="w">
+          </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="s2">"Cuál es tu nombre?"</span><span class="w">
+          </span><span class="k">read</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">nombre</span><span class="w">     </span><span class="c1">! READ guarda lo que escribas adentro de la variable nombre  </span><span class="w">
+          </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="s2">"Hola "</span><span class="p">,</span><span class="w"> </span><span class="n">nombre</span><span class="p">,</span><span class="s2">", todo tranqui?"</span><span class="w">
+
+      </span><span class="k">end</span><span class="w"> </span><span class="k">program</span><span class="w">
+</span></code></pre></div></div>
+<h2 id="data-types"><em>Data types</em></h2>
+
+<p>Cualquier variable que se defina en fortran va a pertenecer a uno de estos 5 tipos:</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">LOGICAL</code></li>
+  <li><code class="language-plaintext highlighter-rouge">INTEGER</code></li>
+  <li><code class="language-plaintext highlighter-rouge">REAL</code></li>
+  <li><code class="language-plaintext highlighter-rouge">COMPLEX</code></li>
+  <li><code class="language-plaintext highlighter-rouge">CHARACTER</code></li>
+</ol>
+
+<p>Cada uno de ellos tiene sus propias características y operaciones.</p>
+
+<h3 id="logical"><code class="language-plaintext highlighter-rouge">LOGICAL</code></h3>
+<p>También conocidos como <em>booleanos</em>, sólo pueden tomar dos valores: <strong>.true.</strong>  ó <strong>.false.</strong>. Para declararlas escribimos: <code class="language-plaintext highlighter-rouge">logical :: mi_variable_logica</code> .</p>
+
+<h4 id="operaciones-lógicas">Operaciones lógicas</h4>
+<p>Estas operaciones toman 1 ó 2 variables lógicas y retornan otra variable lógica. Por ejemplo, sean <code class="language-plaintext highlighter-rouge">p</code> y <code class="language-plaintext highlighter-rouge">q</code> dos variables logicas:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Sintaxis</th>
+      <th style="text-align: left">Operación</th>
+      <th style="text-align: left">Descripcion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">.not. p</code></td>
+      <td style="text-align: left"><em>Negación</em></td>
+      <td style="text-align: left">Retorna el opuesto.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">p .and. q</code></td>
+      <td style="text-align: left"><em>Conjunción</em></td>
+      <td style="text-align: left">Retorna <strong>.true.</strong>  sii ambas son <strong>.true.</strong>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">p .or. q</code></td>
+      <td style="text-align: left"><em>Disyunción</em></td>
+      <td style="text-align: left">Retorna <strong>.false.</strong> sii ambas son <strong>.false.</strong>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">p .eqv. q</code></td>
+      <td style="text-align: left"><em>Equivalencia</em></td>
+      <td style="text-align: left">Retorna <strong>.true.</strong>  sii ambas son iguales.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">p .neqv. q</code></td>
+      <td style="text-align: left"><em>In-equivalencia</em> <em>(XOR)</em></td>
+      <td style="text-align: left">Retorna <strong>.false.</strong> sii ambas son iguales.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="integer"><code class="language-plaintext highlighter-rouge">INTEGER</code></h3>
+<p>Representan los números enteros. Se declaran: ` integer ::  mi_entero, otro_entero=2`</p>
+<h4 id="operaciones">Operaciones:</h4>
+<ul>
+  <li><strong>Aritméticas:</strong>
+    <ul>
+      <li>Suma (+) y Resta (-)</li>
+      <li>Multiplicación (*) y División (/)</li>
+      <li>Potencia (**)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>(Advertencia: Los enteros no son cerrados en la division! Por lo tanto esta division retorna el cociente entero.)</em></p>
+
+<ul>
+  <li><strong>Relacionales:</strong>
+Toman dos <em>INTEGER</em> y devuelven un <em>LOGICAL</em>, sirven para comparar INTEGER entre sí, por ejemplo sean <code class="language-plaintext highlighter-rouge">n</code> y <code class="language-plaintext highlighter-rouge">m</code> dos enteros:</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sintaxis</th>
+      <th style="text-align: center">Operación</th>
+      <th style="text-align: left">Descripcion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">n ==  m</code></td>
+      <td style="text-align: center"><em>Igualdad</em></td>
+      <td style="text-align: left">Devuelve  <strong>.true.</strong>  sii n es igual a m.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">n /=  m</code></td>
+      <td style="text-align: center"><em>DesIgualdad</em></td>
+      <td style="text-align: left">Devuelve  <strong>.false.</strong> sii n es igual a m.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">n  &lt;  m</code></td>
+      <td style="text-align: center"><em>Menor</em></td>
+      <td style="text-align: left">Devuelve  <strong>.true.</strong>  sii n es menor a m.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">n &lt;=  m</code></td>
+      <td style="text-align: center"><em>Menor-igualdad</em></td>
+      <td style="text-align: left">Devuelve  <strong>.true.</strong>  sii n es menor o igual a m.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">n  &gt;  m</code></td>
+      <td style="text-align: center"><em>Mayor</em></td>
+      <td style="text-align: left">Devuelve  <strong>.true.</strong>  sii n es mayor a m.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">n &gt;=  m</code></td>
+      <td style="text-align: center"><em>Mayor-igual</em></td>
+      <td style="text-align: left">Devuelve  <strong>.true.</strong>  sii n es mayor o igual a m.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><em>(Advertencia: No confundir <code class="language-plaintext highlighter-rouge">==</code> con la asignación <code class="language-plaintext highlighter-rouge">=</code>)</em></p>
+
+<ul>
+  <li><strong>Intrinsecas:</strong>
+Las operaciones <em>intrinsecas</em> son funciones que vienen pre-definidas en fortran. Las más importantes para <code class="language-plaintext highlighter-rouge">INTEGER</code> son:
+    <div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="nb">abs</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w">    </span><span class="c1">! valor absoluto de n</span><span class="w">
+  </span><span class="nb">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">)</span><span class="w">  </span><span class="c1">! resto de dividir n por m</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="real"><code class="language-plaintext highlighter-rouge">REAL</code></h3>
+<p>Los REAL (también conocidos como <em>punto flotante</em>) son los tpos de datos que usamos para representar numeros reales.</p>
+
+<p><em>Advertencia: Los numeros reales tienen infinitos decimales pero las computadoras solo pueden almacenar en memoria números de finitios decimales, por lo que en algún punto tiene que redondearlos. Este proceso acarrea errores (conocidos como errores de redondeos).</em></p>
+
+<p>Para declarar un real escribimos:  <code class="language-plaintext highlighter-rouge">real  :: mi_numero_real</code>. Si queremos que tenga mas decimales podemos declararlo como <code class="language-plaintext highlighter-rouge">double precision  :: mi_var_doble_precisionx</code>.</p>
+
+<h4 id="operaciones-1">Operaciones:</h4>
+<ul>
+  <li><strong>Artiméticas</strong>  (+, - , * , /, ** )
+    <ul>
+      <li>Tener en cuenta la <strong>precedencia</strong> (jerarquias): la suma y la resta tienen mayor jerarquía que la multiplicación y la división, y estos a su vez mayor jeraquía que la potencia. Ante la duda lo mejor es utilizar todos los <strong>parentesis</strong> que sean necesarios.</li>
+    </ul>
+  </li>
+  <li><strong>Intrinsecas</strong>
+Hay muchas funciones en fortran definidas para reales, algunas de las más utilizadas son:
+    <div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="nb">log</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="nb">log10</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="nb">exp</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="err">...</span><span class="w">
+</span></code></pre></div>    </div>
+    <p><em>(Observación: utilizando <code class="language-plaintext highlighter-rouge">;</code> podemos ejecutar multiples instrucciones en una sóla linea.)</em></p>
+  </li>
+</ul>
+
+<h3 id="complex"><code class="language-plaintext highlighter-rouge">COMPLEX</code></h3>
+<p>Estos representan los números complejos (números con parte <em>real</em> y parte <em>imaginaria</em>). Se almacenan como un par ordenado  <em>(Re, Im)</em>, y se declaran:
+` complex :: z=(1,2) `</p>
+
+<h4 id="operaciones-2">Operaciones</h4>
+
+<ul>
+  <li>
+    <p><strong>Aritmeticas</strong>  (+ - * / **)</p>
+  </li>
+  <li>
+    <p><strong>Intrinsecas</strong>
+Algunas funciones intrínsecas básicas de complejos son:</p>
+    <div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w">           </span><span class="c1">!devuelve parte real</span><span class="w">
+    </span><span class="nb">aimag</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w">          </span><span class="c1">!devuelve parte imaginaria</span><span class="w">
+    </span><span class="nb">conjg</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w">          </span><span class="c1">!devuelve el conjugado de z</span><span class="w">
+    </span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w">            </span><span class="c1">!devuelve el módulo de z</span><span class="w">
+    </span><span class="nb">atan2</span><span class="p">(</span><span class="kt">real</span><span class="p">(</span><span class="n">z</span><span class="p">),</span><span class="w"> </span><span class="nb">aimag</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="w"> </span><span class="c1">!devuelve el argumento de z</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="character"><code class="language-plaintext highlighter-rouge">CHARACTER</code></h3>
+<p>Tambien conocidos como <code class="language-plaintext highlighter-rouge">strings</code>, se utilizan para almacenar letras y palabras. Se declaran: <code class="language-plaintext highlighter-rouge">character :: letra</code> ó <code class="language-plaintext highlighter-rouge">character(len=10) :: palabra</code>. Donde <code class="language-plaintext highlighter-rouge">len=n</code> define el numero de caracteres que tiene la variable.</p>
+
+<h4 id="operaciones-3">Operaciones:</h4>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">len</span><span class="p">(</span><span class="n">palabra</span><span class="p">)</span><span class="w">                	</span><span class="c1">!devuelve el numero de caractéres</span><span class="w">
+</span><span class="n">palabra</span><span class="p">(</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">)</span><span class="w"> 		    	</span><span class="c1">!substring (de la letra 3 a la 7)</span><span class="w">
+</span><span class="n">palabra</span><span class="p">(</span><span class="mi">3</span><span class="p">:)//</span><span class="n">palabra</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span><span class="w">   	</span><span class="c1">!concatenación</span><span class="w">
+</span><span class="nb">trim</span><span class="p">(</span><span class="n">palabra</span><span class="p">)</span><span class="w">		    	</span><span class="c1">!remueve espacios blancos al final del string</span><span class="w">
+</span><span class="nb">repeat</span><span class="p">(</span><span class="n">palabra</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w">           	</span><span class="c1">!concatena (repite) el string n-veces</span><span class="w">
+</span><span class="nb">index</span><span class="p">(</span><span class="n">palabra</span><span class="p">,</span><span class="w"> </span><span class="n">patron</span><span class="p">)</span><span class="w">      </span><span class="c1">!devuelve la posición en la que aparece 'x' por primera vez</span><span class="w">
+</span><span class="nb">scan</span><span class="p">(</span><span class="n">palabra</span><span class="p">,</span><span class="n">set</span><span class="p">)</span><span class="w">   </span><span class="c1">!devuelve la pos. en la que aparece alguna de las letras 'set' por primera vez.</span><span class="w">
+</span><span class="nb">verify</span><span class="p">(</span><span class="n">palabra</span><span class="p">,</span><span class="n">set</span><span class="p">)</span><span class="w"> </span><span class="c1">!devuelve la pos. en donde 'palabra' deja de ser igual a 'set'</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Operaciones tales como <code class="language-plaintext highlighter-rouge">upper</code>, <code class="language-plaintext highlighter-rouge">lower</code>, <code class="language-plaintext highlighter-rouge">replace</code> o <code class="language-plaintext highlighter-rouge">split</code> no estan presentes en fortran como operaciones base, pero obviamente pueden ser programadas sin mucha dificultad.</p>
+
+<h2 id="controladores-de-flujo">Controladores de flujo</h2>
+
+<blockquote>
+  <p>Sintaxis de los controladores más importantes en fortran (<em>loops</em> y <em>condicionales</em>).</p>
+</blockquote>
+
+<p>La funcion de los <em>controladores</em> es alterar la secuencia de instrucciones a ser ejecutadas.</p>
+
+<h3 id="condicionales">Condicionales</h3>
+<p>Los condicionales ejecutan un segmento de código cuando se cumple alguna condición.</p>
+
+<h4 id="if"><code class="language-plaintext highlighter-rouge">IF</code></h4>
+<p>El <strong><code class="language-plaintext highlighter-rouge">if</code></strong> revisa si se cumple una condición (generalmente expresada en una operación relacional), en caso afirmativo ejecuta una porción de código, y en caso negativo sigue de largo hasta encontrarse con otro condicional, su sintaxis en fortran es así:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+        </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="s2">"x es positivo."</span><span class="w">
+    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+        </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="s2">"x es negativo."</span><span class="w">
+    </span><span class="k">else</span><span class="w">
+        </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="s2">"x es cero."</span><span class="w">
+    </span><span class="k">end</span><span class="w"> </span><span class="k">if</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="case"><code class="language-plaintext highlighter-rouge">CASE</code></h4>
+<p>El controlador <strong><code class="language-plaintext highlighter-rouge">case</code></strong> propone una serie de escenarios para el valor de una variable, y de acuerdo a cual se cumpla ejecuta un procedimiento distinto. Por ejemplo:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="k">select</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w">
+    </span><span class="k">case</span><span class="p">(</span><span class="mi">1</span><span class="p">:)</span><span class="w">
+      </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="s2">"x es positivo."</span><span class="w">
+    </span><span class="k">case</span><span class="w"> </span><span class="p">(:</span><span class="mi">-1</span><span class="p">)</span><span class="w">
+      </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="s2">"x es negativo."</span><span class="w">
+    </span><span class="k">case</span><span class="w"> </span><span class="n">default</span><span class="w">
+      </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="s2">"x es cero."</span><span class="w">
+  </span><span class="k">end</span><span class="w"> </span><span class="k">select</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="loops">Loops</h3>
+<p>Los loops (o <em>bucles</em>) ejecutan una secuencia de código repetitivamente (<em>iterativamente</em> decimos) un número determinado de veces (ó hasta/mientras que se satisfaga una condición).</p>
+
+<h4 id="do"><code class="language-plaintext highlighter-rouge">DO</code></h4>
+
+<p>El principal <em>loop</em> es el <strong><code class="language-plaintext highlighter-rouge">do</code></strong> (equivalente al <strong><code class="language-plaintext highlighter-rouge">for</code></strong> de otros lenguajes)</p>
+
+<p>Este controlador utiliza un <code class="language-plaintext highlighter-rouge">INTEGER</code> como <em>contador</em> (ó indice), el cual va tomando distintos valores, y las instrucciones contenidas en el bloque <code class="language-plaintext highlighter-rouge">do</code> se repiten para cada valor del contador. La sitaxis en fortran es:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="w">    	</span><span class="c1">!i toma valores del 1 al 10, y avanza de a 2     </span><span class="w">
+        </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="n">i</span><span class="w">   
+    </span><span class="k">end</span><span class="w"> </span><span class="k">do</span><span class="w">
+</span></code></pre></div></div>
+<p>El programa anterior mostrará secuencialmente en pantalla los numeros del 1 al 10.</p>
+
+<h4 id="do-while"><code class="language-plaintext highlighter-rouge">DO WHILE</code></h4>
+<p>Este controlador es una mezcla de los dos anteriores, funciona repitiendo una serie de instrucciones, pero chequiando en cada repetición si una condición se cumple, en caso que deje de cumplirse termina de <em>iterar</em>. Su sintaxis es:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="k">do</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">)</span><span class="w">  </span><span class="c1">!ejecutar mientras i sea menor a 10</span><span class="w">
+        </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="n">i</span><span class="w">
+        </span><span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="mi">+2</span><span class="w">
+    </span><span class="k">end</span><span class="w"> </span><span class="k">do</span><span class="w">
+</span></code></pre></div></div>
+<p>Este código hace exactamente lo mismo que el <code class="language-plaintext highlighter-rouge">do</code> anterior.</p>
+
+<hr />
+<p>Algunos comandos útiles para utilizar dentro de controladores son:</p>
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">STOP</code></strong> termina la ejecución del programa.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">EXIT</code></strong> sale del bloque controlador.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">CONTINUE</code></strong> no hace absolutamente nada (pero aveces queda prolijo).</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">CYCLE</code></strong> pasa a la siguiente iteración (en loops).</li>
+</ul>
+
+<h2 id="procedimientos">Procedimientos</h2>
+
+<blockquote>
+  <p>Crear <em>funciones</em> y <em>subrutinas</em>.</p>
+</blockquote>
+
+<p>Los procedimientos (<strong>funciones</strong> y <strong>subrutinas</strong>) sirven para <em>encapsular</em> un conjunto de instrucciones que cumplen alguna función ó que se utilizan reiteradas veces a lo largo del código.
+  Construir procedimientos nos va a ahorrar muchas lineas de código y va a hacer nuestro programa mucho más entendible. 
+ Los procedimientos se colocan al final del cuerpo del programa, y van precedidos de la sentencia: <strong><code class="language-plaintext highlighter-rouge">contains</code></strong>.</p>
+
+<h2 id="function"><code class="language-plaintext highlighter-rouge">FUNCTION</code></h2>
+<p>Las funciones toman una serie de argumentos (valores de entrada o <em>inputs</em>), hacen algun procedimiento con ellos y retornan un único resultado (valor de salida o <em>output</em>).</p>
+
+<p>Por ejemplo, una funcion que suma dos reales se escribe:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">        </span><span class="k">function</span><span class="w"> </span><span class="n">suma</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w">   </span><span class="k">result</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w">
+          </span><span class="k">implicit</span><span class="w"> </span><span class="k">none</span><span class="w">
+          </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="k">in</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="w">
+          </span><span class="kt">real</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">z</span><span class="w">
+    
+          </span><span class="n">z</span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="w">
+         </span><span class="k">end</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">suma</span><span class="w">
+</span></code></pre></div></div>
+<p>Las variables definidas adentro de la función no tienen por que existir afuera de esta, por esto se las conoce como <strong>dummy arguments</strong> y simplemente linkean las variables externas (que entran como argumentos a la funcion y sí están definidas en el programa) con las variables internas del procedimiento.</p>
+
+<p>Es recomendable definir la variable de salida (<strong><code class="language-plaintext highlighter-rouge">result</code></strong>), dentro de la funcion, si no se define explicitamente va a tomar el nombre de la funcion.</p>
+
+<p>Con <strong><code class="language-plaintext highlighter-rouge">intent</code></strong> decidimos si queremos que la variable externa sea modificada ó no, a lo largo del procedimiento.</p>
+<ul>
+  <li><em><code class="language-plaintext highlighter-rouge">intent(in)</code></em>  significa que la variable se define como <em>solo lectura</em></li>
+  <li><em><code class="language-plaintext highlighter-rouge">intent(inout)</code></em> lectura y escritura (<em>default</em>).</li>
+  <li><em><code class="language-plaintext highlighter-rouge">intent(out)</code></em>  la variable queda como sólo escritura (no se para que sirve).</li>
+</ul>
+
+<p>Una vez definida una función se la invoca en el programa como: <code class="language-plaintext highlighter-rouge">mi_funcion(arg1,arg2)</code></p>
+
+<h3 id="subroutine"><code class="language-plaintext highlighter-rouge">SUBROUTINE</code></h3>
+<p>Las subrutinas a diferencia de las funciones no retornan ningún resultado, aunque sí pueden modificar variables preexistenes del programa (mediante <code class="language-plaintext highlighter-rouge">intent(inout)</code>).</p>
+
+<p>La sintaxis de una subrutina es:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">      </span><span class="k">subroutine</span><span class="w"> </span><span class="n">suma</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="p">,</span><span class="n">arg3</span><span class="p">)</span><span class="w">
+        </span><span class="k">implicit</span><span class="w"> </span><span class="k">none</span><span class="w">
+	
+	</span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="k">in</span><span class="p">)</span><span class="w">    </span><span class="p">::</span><span class="w"> </span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="w">
+	</span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="k">inout</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">arg3</span><span class="w">
+
+	</span><span class="n">arg3</span><span class="o">=</span><span class="w"> </span><span class="n">arg1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">arg2</span><span class="w">
+
+      </span><span class="k">end</span><span class="w"> </span><span class="k">subroutine</span><span class="w">
+
+</span></code></pre></div></div>
+
+<p>La subrutinas se invocan escribiendo: ` call mi_subrutina(arg1,arg2,…) `</p>
+
+<h2 id="modulos">Modulos</h2>
+
+<blockquote>
+  <p>Crear modulos internos y externos. Uso de interfaces.</p>
+</blockquote>
+
+<p>Los módulos son bloques de código que guardan informacion, subrutinas y funciones. Van a hacer que nuestro programa sea más entendible y manejable. Sobre todo cuando hagamos un proyecto grande.</p>
+
+<h3 id="módulos-internos">Módulos internos:</h3>
+
+<p>Un módulo interno se escribe en el mismo archivo que el programa principal y antes que este. Funciona y tiene la misma estructura que un programa normal, la sintaxis sería:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="k">module</span><span class="w"> </span><span class="n">mi_modulo</span><span class="w">
+     </span><span class="k">implicit</span><span class="w"> </span><span class="k">none</span><span class="w">
+     </span><span class="c1">!Declaración de parametros</span><span class="w">
+
+      </span><span class="k">contains</span><span class="w">
+      </span><span class="c1">!Definición de Subrutinas y Funciones</span><span class="w">
+    
+   </span><span class="k">end</span><span class="w"> </span><span class="k">module</span><span class="w">
+
+   </span><span class="k">program</span><span class="w"> </span><span class="n">main</span><span class="w"> 
+	</span><span class="k">use</span><span class="w"> </span><span class="n">mi_modulo</span><span class="w">
+
+	</span><span class="err">...</span><span class="w"> 		</span><span class="c1">!aca va el programa principal</span><span class="w">
+
+   </span><span class="k">end</span><span class="w"> </span><span class="k">program</span><span class="w"> </span><span class="n">main</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Para utilizar el modulo en el programa principal lo llamamos con: <strong><code class="language-plaintext highlighter-rouge">use mi_modulo</code></strong> ó si sólo queremos usar algunas subrutinas contenidas en el mismo lo llamamos: <strong><code class="language-plaintext highlighter-rouge">use modulo, only : rutina1,rutina8</code></strong></p>
+
+<h3 id="módulos-externos">Módulos externos:</h3>
+
+<p>Un módulo externo va a ser exactamente lo mismo pero copiado en un archivo aparte, la única diferencia va a estar en su compilación:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  gfortran -c modulo.f main.f
+  gfortran modulo.o main.o
+</code></pre></div></div>
+<p>En la compilacion siempre el orden de los archivos va a de menor a mayor jerarquia, el ultimo archivo es el programa principal.</p>
+
+<p>Cuando el programa se vuelva complejo y tenga muchos modulos llamandose entre si vamos a tener que usar para compilar <em><strong>Makefiles</strong></em> .</p>
+
+<h3 id="variables-públicas-y-privadas">Variables públicas y privadas</h3>
+<p>Podemos decidir si las variables generadas en los módulos van a estar disponibles, ó no, fuera de este.</p>
+
+<p>Eso se realiza poniendo antes de la declaración de cada variable la sentencia <strong><code class="language-plaintext highlighter-rouge">public</code></strong> ó  <strong><code class="language-plaintext highlighter-rouge">private</code></strong> según corresponda.</p>
+
+<h3 id="interfaces">Interfaces:</h3>
+
+<p>Las interfaces tienen varios usos, pero uno de ellos es generalizar procedimientos dandole flexibilidad a las variables de entrada y/o salida de una funcion.</p>
+
+<p>Por ejemplo, si queremos definir una funcion que calcule el cuadrado de un numero, pero el numero de entrada puede ser tanto <code class="language-plaintext highlighter-rouge">real</code> como <code class="language-plaintext highlighter-rouge">complex</code>. Luego tenemos que definir una funcion para cada caso, aunque mediante la interfaz podemos unificarla en una sola funcion mas grande:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="k">interface</span><span class="w"> </span><span class="n">RaizCuadrada</span><span class="w">
+        </span><span class="k">procedure</span><span class="w">  </span><span class="n">RaizCuadradaR</span><span class="p">,</span><span class="w"> </span><span class="n">RaizCuadradaC</span><span class="w">
+    </span><span class="k">end</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">RaizCuadrada</span><span class="w">
+
+    </span><span class="k">contains</span><span class="w">
+
+    </span><span class="k">function</span><span class="w"> </span><span class="n">RaizCuadradaR</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w">	</span><span class="k">result</span><span class="p">(</span><span class="n">x_cuadrado</span><span class="p">)</span><span class="w">
+		</span><span class="kt">real</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">x_cuadrado</span><span class="w">
+    		</span><span class="n">x_cuadrado</span><span class="o">=</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="w">
+    </span><span class="k">end</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">RaizCuadradaR</span><span class="w">
+
+    </span><span class="k">function</span><span class="w"> </span><span class="n">RaizCuadradaC</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w">	</span><span class="k">result</span><span class="p">(</span><span class="n">z_cuadrado</span><span class="p">)</span><span class="w">
+		</span><span class="kt">complex</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="n">z_cuadrado</span><span class="w">
+    		</span><span class="n">z_cuadrado</span><span class="o">=</span><span class="n">z</span><span class="o">*</span><span class="n">z</span><span class="w">
+    </span><span class="k">end</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">RaizCuadradaC</span><span class="w">
+</span></code></pre></div></div>
+<p>Cuando usemos <code class="language-plaintext highlighter-rouge">RaizCuadrada(x)</code> nos va a devolver el resultado de aquella funcion que sea compatible con <code class="language-plaintext highlighter-rouge">x</code>. Este proceso de asociar el nombre de una funcion con varias funciones se lo conoce como <strong>overloading</strong>.</p>
+
+<h2 id="inputoutput">Input/Output</h2>
+
+<blockquote>
+  <p>Leer y escribir información..</p>
+</blockquote>
+
+<h3 id="standard-io">Standard I/O</h3>
+<p>Los standard input/output (abreviados: <em>stdin</em>/<em>stdout</em>), son las formas más símples de transferencia de información entre la computadora y el usuario.</p>
+
+<p>El <em>stdin</em> es el que está vinculado a las entradas que damos desde la consola con nuestro teclado. En FORTRAN el ingreso de <em>stdinput</em> se reclama con la función <strong><code class="language-plaintext highlighter-rouge">read</code></strong>:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="k">read</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">),</span><span class="n">variable</span><span class="w">
+</span></code></pre></div></div>
+
+<p>La forma mas simple de retornar informacion es el <em>stout</em>, que serian los mensajes que aparecen en consola. Para mandar cosas al <em>stout</em> podemos usar:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">),</span><span class="s1">'mensaje'</span><span class="w"> 
+    </span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="s1">'mensaje'</span><span class="w"> 	</span><span class="c1">!esta es la forma abreviada</span><span class="w">
+</span></code></pre></div></div>
+<p>Comentario: Una forma de pensar al stdout es como un archivo almacenado en algun lugar de la computadora (en linux generalmente esta en <em>/dev/fd/2</em>). Cada vez que un cambio se produce en este archivo la terminal lo muestra en pantalla.</p>
+
+<p>De los dos asteriscos que aparecen en <code class="language-plaintext highlighter-rouge">read(*,*)</code> y <code class="language-plaintext highlighter-rouge">write(*,*)</code>, el primero está vinculado al <strong>numero de unidad logica</strong> (<em>logical unit number</em>) <code class="language-plaintext highlighter-rouge">UNIT</code>, y el segundo con el formáto del input/output (<code class="language-plaintext highlighter-rouge">FMT</code>).</p>
+
+<h3 id="unidad-lógica">Unidad Lógica</h3>
+<p>La unidad lógica está vinculado al <em>canal</em> por el que viajan los inputs y ouputs. A medida que el preograma se ejecuta la información puede moverse en múltiples rutas (por ejemplo ir a distintos archivos) para distinguirlas es conveniente <em>etquietar</em> las unidades lógicas, en FORTRAN usamos un <code class="language-plaintext highlighter-rouge">INTEGER</code> para tal fin. Si la unidad logica es el <em>stdin/stdout</em> entonces <code class="language-plaintext highlighter-rouge">UNIT=*</code>. Cuando veamos como trabajar con archivos vamos a profundizar en esto.</p>
+
+<h3 id="formato">Formato</h3>
+<p>El formato <code class="language-plaintext highlighter-rouge">FMT</code> es un <code class="language-plaintext highlighter-rouge">CHARACTER</code> en el cual se especifica la forma del output ó input (siempre que sepamos, caso contario <code class="language-plaintext highlighter-rouge">FMT=*</code>).</p>
+
+<p>Las códigos utilizados para definir el formáto de las variables de fortran son:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>FMT</strong></th>
+      <th style="text-align: center">tipo</th>
+      <th style="text-align: right">descripcion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Fn.m</td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">REAL</code></td>
+      <td style="text-align: right">punto flotante en forma decimal.</td>
+    </tr>
+    <tr>
+      <td>En.m</td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">REAL</code></td>
+      <td style="text-align: right">punto flotante en forma exponencial.</td>
+    </tr>
+    <tr>
+      <td>Dn.m</td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">DOUBLE PRECISION</code></td>
+      <td style="text-align: right">punto flotante de doble precision.</td>
+    </tr>
+    <tr>
+      <td>In</td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">INTEGER</code></td>
+      <td style="text-align: right">numero entero</td>
+    </tr>
+    <tr>
+      <td>An</td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">CHARACTER</code></td>
+      <td style="text-align: right">caracter alfanumerico</td>
+    </tr>
+    <tr>
+      <td>Ln</td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">LOGICAL</code></td>
+      <td style="text-align: right">variable logica</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>donde : <strong><code class="language-plaintext highlighter-rouge">n</code></strong> = numero de espacios/digitos totales de la variable (considerar que el signo la coma y el signo de exponente ocupan un espacio); <strong><code class="language-plaintext highlighter-rouge">m</code></strong>= decimales (mantisa para la forma exponencial).</p>
+
+<h4 id="otros-símbolos-que-podemos-usar-en-fmt">Otros símbolos que podemos usar en FMT:</h4>
+
+<p>Los simbolos que describen como es el formato se denominan especificadores de formato (<em>format specifiers</em>), algunos bastante utiles:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>FMT</strong></th>
+      <th style="text-align: right">descripcion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>n(…)</td>
+      <td style="text-align: right">Repetir lo que esta entre (…) n-veces</td>
+    </tr>
+    <tr>
+      <td>“…”</td>
+      <td style="text-align: right">Literal (lo que esta dentro de “”)</td>
+    </tr>
+    <tr>
+      <td>nX</td>
+      <td style="text-align: right">Espacio horizontal/skip</td>
+    </tr>
+    <tr>
+      <td>/</td>
+      <td style="text-align: right">Espacio vertical/nueva linea</td>
+    </tr>
+    <tr>
+      <td>SP</td>
+      <td style="text-align: right">Mostrar signo</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="manejo-de-archivos">Manejo de archivos</h2>
+<p>Otra forma de transferir informacion es mediante el uso de archivos.</p>
+
+<h3 id="openclose"><strong><code class="language-plaintext highlighter-rouge">OPEN</code></strong>/<strong><code class="language-plaintext highlighter-rouge">CLOSE</code></strong></h3>
+<p>Si queremos abrir un archivo en FORTRAN, tenemos que usar el siguiente comando:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="k">open</span><span class="p">(</span><span class="n">UNIT</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">FILE</span><span class="o">=</span><span class="s1">'archivo.txt'</span><span class="p">)</span><span class="w"> 	</span><span class="c1">!abrir archivo			   </span><span class="w">
+    
+	</span><span class="c1">!(aca hariamos algo con el archivo...	)</span><span class="w">
+
+    </span><span class="k">close</span><span class="p">(</span><span class="n">UNIT</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">			</span><span class="c1">!cerrar archivo</span><span class="w">
+</span></code></pre></div></div>
+<p>Los unicos argumentos obligatorios son <code class="language-plaintext highlighter-rouge">UNIT</code> y <code class="language-plaintext highlighter-rouge">FILE</code>. Pero hay otros argumentos opcionales que pueden ser utiles:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Keyword</th>
+      <th style="text-align: left">Valor/Tipo</th>
+      <th style="text-align: left">Comentarios</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">UNIT</code></td>
+      <td style="text-align: left">(<code class="language-plaintext highlighter-rouge">INTEGER</code>)</td>
+      <td style="text-align: left">Número de unidad lógica (LUN)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">FILE</code></td>
+      <td style="text-align: left">(<code class="language-plaintext highlighter-rouge">CHARACTER</code>)</td>
+      <td style="text-align: left">Nombre de archivo a usar</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">STATUS</code></td>
+      <td style="text-align: left">‘OLD’</td>
+      <td style="text-align: left">Para archivo preexistente</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">‘NEW’</td>
+      <td style="text-align: left">Para nuevo archivo</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">ACCESS</code></td>
+      <td style="text-align: left">‘SEQUENTIAL’</td>
+      <td style="text-align: left">Lectura linea por linea</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">‘DIRECT’</td>
+      <td style="text-align: left">Lectura de acceso ‘random’</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">FORM</code></td>
+      <td style="text-align: left">‘FORMATTED’</td>
+      <td style="text-align: left">Para archivo alfanumérico</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">‘UNFORMATTED’</td>
+      <td style="text-align: left">Para archivos binarios</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">ACTION</code></td>
+      <td style="text-align: left">‘READ’</td>
+      <td style="text-align: left">Solo lectura</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">‘WRITE’</td>
+      <td style="text-align: left">Solo escritura</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">‘READWRITE’</td>
+      <td style="text-align: left">Lectura y escritura</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">‘UNDEFINED’</td>
+      <td style="text-align: left">Indefinido</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">IOSTAT</code></td>
+      <td style="text-align: left">(<code class="language-plaintext highlighter-rouge">INTEGER</code>)</td>
+      <td style="text-align: left">Guarda el estado del proceso</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Recuerden que <code class="language-plaintext highlighter-rouge">UNIT</code> es la unidad logica, es un numero entero que nos va a servir para referenciar el archivo siempre que invoquemos alguna funcion que necesite hacer eso del archivo.</p>
+
+<p>Un argumento muy util es <code class="language-plaintext highlighter-rouge">IOSTAT</code>, esta es una variable <code class="language-plaintext highlighter-rouge">INTEGER</code> (que debemos crear previamente) y sirve para saber si fue exitosa la lectura. En base a este podemos planificar un mensaje de error y asi poder ubicar el lugar donde se produjo el error en el codigo. <code class="language-plaintext highlighter-rouge">IOSTAT</code> se inicializa en 0, cuando termina la lectura cambia a:                                                        <br />
+	- (-1), cuando termina de leer el registro.
+	- (-2), si la lectura se estanca.
+	- numero positivo, si hay un error fatal.</p>
+
+<h3 id="readwrite"><strong><code class="language-plaintext highlighter-rouge">READ</code></strong>/<strong><code class="language-plaintext highlighter-rouge">WRITE</code></strong></h3>
+
+<p>Una vez que tenemos un archivo abierto podemos leer o escribir informacion en el utilizando los mismos comandos que antes, esta vez especificando la <code class="language-plaintext highlighter-rouge">UNIT</code> correspondiente al archivo en cuestion, si queremos escribir algo:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">	</span><span class="k">OPEN</span><span class="p">(</span><span class="n">UNIT</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">FILE</span><span class="o">=</span><span class="s2">"archivo.txt"</span><span class="p">,</span><span class="n">STATUS</span><span class="o">=</span><span class="s2">"NEW"</span><span class="p">,</span><span class="n">ACTION</span><span class="o">=</span><span class="s2">"WRITE"</span><span class="p">)</span><span class="w">
+        </span><span class="k">WRITE</span><span class="p">(</span><span class="n">UNIT</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">FMT</span><span class="o">=</span><span class="s1">'(a30)'</span><span class="p">)</span><span class="w"> </span><span class="s1">'aca dejo un mensaje'</span><span class="w">
+	</span><span class="k">CLOSE</span><span class="p">(</span><span class="n">UNIT</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p>y para leer contenido de un archivo:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">	</span><span class="k">OPEN</span><span class="p">(</span><span class="n">UNIT</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">FILE</span><span class="o">=</span><span class="s2">"archivo.txt"</span><span class="p">,</span><span class="n">STATUS</span><span class="s2">"OLD"</span><span class="p">,</span><span class="n">ACTION</span><span class="o">=</span><span class="s2">"READ"</span><span class="p">)</span><span class="w">
+        </span><span class="k">READ</span><span class="p">(</span><span class="n">UNIT</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">FMT</span><span class="o">=</span><span class="s1">'(a30)'</span><span class="p">)</span><span class="w"> </span><span class="n">mensaje_leido</span><span class="w">
+	</span><span class="k">CLOSE</span><span class="p">(</span><span class="n">UNIT</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="namelist"><strong><code class="language-plaintext highlighter-rouge">NAMELIST</code></strong></h3>
+<p>Los namelist son una forma muy comoda de inicializar un conjunto de variables desde un archivo externo.</p>
+
+<p>Dentro de un namelist es un archivo externo que contiene el nombre de un grupo de variables y sus valores, por ejemplo asi:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&amp;mi_namelist
+	var1= 1,
+	var3='hola', v4=6.54	!no importan los espacios
+	var2= 2.12321, 		!no hace falta que esten ordenados
+	...
+	varN=.true.,
+/
+</code></pre></div></div>
+<p><em>mi_namelist</em> es un identificador del namelist, ya que puedo tener varios, incluso en el mismo archivo. Se utilizan los simbolos <strong>&amp;</strong> y <strong>/</strong> para delimitar cada namelist.</p>
+
+<p>Dentro del codigo tenemos que definir el nombre del namelist (en este caso <em>mi_namelist</em>), y todas las variables contenidas en el. La sintaxis seria:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">	</span><span class="k">namelist</span><span class="p">/</span><span class="n">mi_lista</span><span class="p">/</span><span class="n">var1</span><span class="p">,</span><span class="n">var2</span><span class="p">,</span><span class="n">var3</span><span class="p">,</span><span class="err">...</span><span class="p">,</span><span class="n">varN</span><span class="w">   	</span><span class="c1">!defino namelist</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Finalmente para leer el namelist usamos la funcion open/close y read de la siguiente forma:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">	</span><span class="k">open</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="s1">'mi_namelist.inp'</span><span class="p">)</span><span class="w">			</span><span class="c1">!abro namelist</span><span class="w">
+    	</span><span class="k">read</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="n">mi_lista</span><span class="p">)</span><span class="w">				</span><span class="c1">!leo los valores</span><span class="w">
+	</span><span class="k">close</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w">					</span><span class="c1">!cierro namelist</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Advertencia: como siempre todas las variables dentro del namelist deben ser definidas antes de definir el namelist y de ser leidas.</p>
+
+<h2 id="arrays">Arrays</h2>
+
+<blockquote>
+  <p>Declarar, y trabajar con arrays.</p>
+</blockquote>
+
+<p>Los arrays son una forma de almacenar multiples valores en una sola variable.</p>
+
+<h3 id="declaración">Declaración</h3>
+<p>La declaración de arrays, es igual a la de cualquier variable, sólo es necesario añadir el rango (ó dimensión) y el número de elementos por cada dimensión.</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="k">implicit</span><span class="w"> </span><span class="k">none</span><span class="w">
+   </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">lista</span><span class="w">
+   </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">n</span><span class="w"> 		</span><span class="c1">!Vector entero</span><span class="w">
+   </span><span class="kt">real</span><span class="w">  	  </span><span class="p">::</span><span class="w"> </span><span class="n">v</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w">	     </span><span class="c1">!Vector </span><span class="w">
+   </span><span class="kt">real</span><span class="w"> 	  </span><span class="p">::</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w">    </span><span class="c1">!Matriz 3x3</span><span class="w">
+
+</span></code></pre></div></div>
+<p>Por default cada dimension se indexa empezando desde 1, pero eso puede ser modificado al definir el array, por ejemplo: <code class="language-plaintext highlighter-rouge">integer :: n(8:12), m(-5:2), o(0:3)</code>.</p>
+
+<h2 id="iniciación">Iniciación</h2>
+<p>La iniciacion de arrays puede ser un poco mas tediosa, muchas veces involucran loops, pero existen algunos atajos para simplificar la notacion, ademas muchas veces los arrays los vamos a levantar desde algun archivo o  utilizando alguna libreria especifica, asi que no es tan grave ni tan importante.</p>
+
+<p>Hay muchas formas de iniciar un array, algunas de las más comúnes:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="n">lista</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Manzana'</span><span class="w">		</span><span class="c1">!Directo</span><span class="w">
+  </span><span class="n">lista</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Banana'</span><span class="w">
+  </span><span class="n">lista</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Kiwi'</span><span class="w">
+
+  </span><span class="n">n</span><span class="o">=</span><span class="p">(/</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">/)</span><span class="w">	</span><span class="c1">!Directo en una linea</span><span class="w">
+
+  </span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="w">			</span><span class="c1">!Loop</span><span class="w">
+	</span><span class="n">n</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="n">i</span><span class="w">
+  </span><span class="k">end</span><span class="w"> </span><span class="k">do</span><span class="w">
+
+  </span><span class="n">n</span><span class="o">=</span><span class="p">(/</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">/)</span><span class="w">		</span><span class="c1">!Loop implicito</span><span class="w">
+  
+  </span><span class="n">v</span><span class="o">=</span><span class="p">(/</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w">  </span><span class="p">/)</span><span class="o">*</span><span class="mf">0.45</span><span class="w">
+  </span><span class="n">v</span><span class="o">=</span><span class="p">(/</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mf">0.45</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w">  </span><span class="p">/)</span><span class="w">
+
+  </span><span class="n">A</span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="w">				</span><span class="c1">!Todos los elementos igual a zero</span><span class="w">
+
+  </span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="o">=</span><span class="p">(/</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="p">/)</span><span class="w">	</span><span class="c1">!Por filas/columnas</span><span class="w">
+  </span><span class="n">A</span><span class="p">(</span><span class="mi">2</span><span class="p">,:)</span><span class="o">=</span><span class="p">(/</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="p">/)</span><span class="w">
+  </span><span class="n">A</span><span class="p">(</span><span class="mi">3</span><span class="p">,:)</span><span class="o">=</span><span class="p">(/</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="p">/)</span><span class="w">
+
+  </span><span class="n">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">reshape</span><span class="p">((/(</span><span class="n">i</span><span class="o">*</span><span class="mf">0.25</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">size</span><span class="p">(</span><span class="n">A</span><span class="p">))/),</span><span class="nb">shape</span><span class="p">(</span><span class="n">A</span><span class="p">))</span><span class="w"> </span><span class="c1">!usando reshape</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Algunas operaciones que nos dan información sobre los arrays son:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">size()</code> devuelve el <em>numero de elementos total</em></li>
+  <li><code class="language-plaintext highlighter-rouge">shape()</code> devuelve un array con el numero de elementos por dimension</li>
+  <li><code class="language-plaintext highlighter-rouge">lbound()</code> <code class="language-plaintext highlighter-rouge">ubound()</code>, devuelve el min/max indice de cada dimension (recuerden: no siempre empiezan en 1)</li>
+</ul>
+
+<h3 id="acceso-y-asignación">Acceso y asignación</h3>
+<p>Se puede acceder a los elementos de los arrays de la siguiente forma:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="n">A</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w">	    </span><span class="c1">!Acceso elemento [fila:3, columna:1]</span><span class="w">
+    </span><span class="n">A</span><span class="p">(:,</span><span class="mi">1</span><span class="p">)</span><span class="w">	    </span><span class="c1">!Acceso columna 1</span><span class="w">
+    </span><span class="n">A</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span><span class="w">	  </span><span class="c1">!Acceso fila 2, columnas del 2 a 3</span><span class="w">
+    </span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="p">:</span><span class="mi">2</span><span class="p">,:)</span><span class="w">  </span><span class="c1">!Acceso a filas del 1 al 6, cada 2 filas</span><span class="w">
+	
+    </span><span class="n">A</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="mf">5.1</span><span class="w">	</span><span class="c1">!asignar valores a un elemento</span><span class="w">
+    </span><span class="n">A</span><span class="p">(</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="p">(/</span><span class="w"> </span><span class="mf">1.4</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">8.7</span><span class="w"> </span><span class="p">/)</span><span class="w">	</span><span class="c1">!asignar valores a un conjunto de elementos</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="algunas-operaciones">Algunas operaciones</h3>
+
+<p>Algunas operaciones basicas que pueden realizarse con arrays:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="c1">!Aritmética</span><span class="w">
+    </span><span class="n">A</span><span class="o">+</span><span class="n">A</span><span class="o">*</span><span class="mi">2</span><span class="w">    	 </span><span class="c1">!operan elemento por elemento</span><span class="w">
+
+    </span><span class="nb">sum</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="w">    	</span><span class="c1">!suma todos los elementos de A</span><span class="w">
+    </span><span class="nb">product</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="w"> 	</span><span class="c1">!producto de todos los elementos de A</span><span class="w">
+
+    </span><span class="nb">all</span><span class="p">(</span><span class="n">A</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="w">     </span><span class="c1">!Todos los elementos de  A &gt; 0?    (.true./.false.)</span><span class="w">
+    </span><span class="nb">any</span><span class="p">(</span><span class="n">A</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span><span class="w">     </span><span class="c1">!Algún elemento de A es &lt; 0 ? 	    (.true./.false.) </span><span class="w">
+    </span><span class="nb">count</span><span class="p">(</span><span class="n">A</span><span class="o">&gt;</span><span class="mf">0.2</span><span class="p">)</span><span class="w"> </span><span class="c1">!Cuantos elementos cumplen A&gt;0.2 ? </span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="memoria-y-portabilidad">Memoria y portabilidad</h2>
+
+<blockquote>
+  <p>Uso uso de memoria.</p>
+</blockquote>
+
+<h3 id="variables-estáticas-tamaño-y-forma-fija">Variables estáticas: Tamaño y forma fija.</h3>
+
+<p>Hasta ahora siempre trabajamos con variables de tamaño fijo, pero si queremos trabajar con variables cuyo tamaño cambie a lo largo de la ejecucion del programa vamos a necesitar definir <em>variables dinámicas</em>.</p>
+
+<h3 id="variables-dinámicas">Variables dinámicas</h3>
+<p>Cualquier variable que definimos ocupa un espacio en la memoria el cual se le es asignado mediante un identificador (<strong>adress</strong>). Las variables dinámicas son variables cuyo adress se determina cuando el programa esta corriendo.</p>
+
+<h4 id="declaración-1">Declaración:</h4>
+<p>En fortran, para definir una variable dinamica escribimos:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">    </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="w">   </span><span class="p">::</span><span class="w">  </span><span class="n">var</span><span class="p">(:)</span><span class="w">
+</span></code></pre></div></div>
+<p>Notar que agregamos la sentencia <strong><code class="language-plaintext highlighter-rouge">allocatable</code></strong>, y además reemplazamos el número de elementos de cada dimensión por el simbolo <strong><code class="language-plaintext highlighter-rouge">:</code></strong>, esto deja el tamaño de la variable indefinido. Sin embargo, cuando quiera hacer uso de la variable voy a tener que especificar su tamaño, esto se hace:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="k">ALLOCATE</span><span class="p">(</span><span class="n">name</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="c1">! Asignar memoria</span><span class="w">
+</span></code></pre></div></div>
+<p>donde <em>bounds</em> es <code class="language-plaintext highlighter-rouge">shape</code> deseado para la variable.</p>
+
+<p>Cuando querramos liberar memoria podemos <em>desalocatar</em> a la variable, así:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="k">DEALLOCATE</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w">        </span><span class="c1">! Liberar memoria</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="fugas-de-memoria">Fugas de memoria:</h4>
+<p>El manejo de la memoria recae sobre nosotros cuando usamos variables dinámicas.
+   La memoria alocatada solo se libera cuando:</p>
+<ul>
+  <li>usamos deallocate</li>
+  <li>se termina el programa</li>
+</ul>
+
+<p>Las variables <em>LOCALES</em> (dentro de subrutinas y funciones) tienen que ser desalocatadas al final del procedimiento!!
+Con <code class="language-plaintext highlighter-rouge">ALLOCATED(a)</code> preguntamos si está allocatado.</p>
+
+<h3 id="precision-y-portabilidad-kind">Precision y portabilidad: <strong><code class="language-plaintext highlighter-rouge">KIND</code></strong></h3>
+
+<p>Los posibles estados de las unidades basicas que conforman la memoria de una computadora son 2 (llamemosle 0 y 1), por lo tanto cualquier dataype que querramos representar con la computadora va a construirse con un conjunto de 0s y 1s (que comparten un mismo adress, un mismo espacio en la memoria). A la unidad de informacion que puede se almacenada en una de estas unidades de memoria se lo conoce como <strong>bit</strong>.</p>
+
+<p>Ocurre aveces que en distintas maquinas o en distintos compiladores que el numero de bits usado para representar a los distintos datatypes puede ser distinta. Esto trae problemas de compatibilidad entre equipos y compiladores.</p>
+
+<p>FORTRAN para evitar estos problemas permite definir la memoria asignada para representar cualquier datatype mediante la asignacion de un valor entero conocido como <strong><code class="language-plaintext highlighter-rouge">kind</code></strong>. Este representa el espacio de memoria que va a ocupar la variable (en bits).</p>
+
+<p>Para representar numeros enteros <strong><code class="language-plaintext highlighter-rouge">INTEGER</code></strong> se utiliza 1 bit para definir al signo (+/-) y el resto de bits para construir el numero enteroen base 2 o binaria.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">bits</th>
+      <th><strong><code class="language-plaintext highlighter-rouge">kind</code></strong></th>
+      <th style="text-align: left">nombre</th>
+      <th style="text-align: center">rango (sin signo)</th>
+      <th style="text-align: left">rango (con signo)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td>-</td>
+      <td style="text-align: left">bit</td>
+      <td style="text-align: center">2<sup>1 </sup>=2</td>
+      <td style="text-align: left">+/-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">8</td>
+      <td>1</td>
+      <td style="text-align: left">byte</td>
+      <td style="text-align: center">2<sup>8 </sup>=256</td>
+      <td style="text-align: left">+/- 2<sup>7 </sup>=(-128;127)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">16</td>
+      <td>2</td>
+      <td style="text-align: left">half</td>
+      <td style="text-align: center">2<sup>16</sup>=65536</td>
+      <td style="text-align: left">+/- 2<sup>15</sup>=(-32768;32767)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">32</td>
+      <td>4</td>
+      <td style="text-align: left">single</td>
+      <td style="text-align: center">2<sup>32</sup>=4294967296</td>
+      <td style="text-align: left">+/- 2<sup>31</sup>=(-2147483648;2147489647)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">64</td>
+      <td>8</td>
+      <td style="text-align: left">double</td>
+      <td style="text-align: center">2<sup>64</sup>=18446744073709551616</td>
+      <td style="text-align: left">+/- 2<sup>63</sup>=(-9223372036854775808;922372036854775807)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>La sintaxis es simplemente:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">	</span><span class="k">implicit</span><span class="w"> </span><span class="k">none</span><span class="w">
+	</span><span class="kt">integer</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">	</span><span class="p">::</span><span class="w"> </span><span class="n">i8</span><span class="w">
+	</span><span class="kt">integer</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="w">	</span><span class="p">::</span><span class="w"> </span><span class="n">i16</span><span class="w">
+	</span><span class="kt">integer</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span><span class="w">	</span><span class="p">::</span><span class="w"> </span><span class="n">i32</span><span class="w">
+	</span><span class="kt">integer</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="w">	</span><span class="p">::</span><span class="w"> </span><span class="n">i64</span><span class="w">
+</span></code></pre></div></div>
+<p>Lamentablemente, tambien ocurre que el codigo de <code class="language-plaintext highlighter-rouge">kind</code> significa distintas cosas en distintos compiladores. Para resolver definitivamente esto inventaron una funcion <code class="language-plaintext highlighter-rouge">SELECTED_INT_KIND(R)</code> que devuelve el kind necesario para representar numeros en el intervalo (10<sup>-R</sup> ; 10<sup>R</sup>).</p>
+
+<p>Los puntos flotante (<strong><code class="language-plaintext highlighter-rouge">REAL</code></strong>) consisten en el signo <strong>s</strong>, la mantisa <strong>m</strong> (o precision) y el exponente <strong>e</strong> (o rango).x=<b>s</b> <b>m</b>10<sup><b>e</b></sup>. Segun el formato estandarizado en la IEEE, la asignacion de bits para cada cada uno es:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">punto flotante</th>
+      <th style="text-align: center">signo</th>
+      <th style="text-align: center">exponente</th>
+      <th style="text-align: center">mantisa</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">32 bits</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">8</td>
+      <td style="text-align: center">23</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">64 bits</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">11</td>
+      <td style="text-align: center">52</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Esto tiene algunas consecuencias de redondeo que harian que querramos usar otro sistema. FORTRAN permite definirlo utilizando el comando <code class="language-plaintext highlighter-rouge">SELECTED_REAL_KIND(m,e)</code>. donde <strong>m</strong>=mantisa y <strong>e</strong>=exponente.</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w">  </span><span class="p">::</span><span class="w"> </span><span class="n">mi_kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SLECTED_REAL_KIND</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span><span class="w">
+   </span><span class="kt">real</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">mi_kind</span><span class="p">)</span><span class="w">  </span><span class="p">::</span><span class="w"> </span><span class="n">x</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Para numeros complejos <strong><code class="language-plaintext highlighter-rouge">COMPLEX</code></strong> la idea es la misma, solo que el tamaño real será del doble del <code class="language-plaintext highlighter-rouge">kind</code> asignado ya que almacena un punto flotante para la parte real y otro para la parte imaginaria.</p>
+
+<p>Los strings o <strong><code class="language-plaintext highlighter-rouge">CHARACTER</code></strong> tambien se representan con numeros enteros. Cada simbolo tiene asignado un numero natural. Hay distintos estandares, el mas conocido “ASCII”  (<em>American Standard Code for Information Interchange</em>) que es el que utiliza FORTAN por default. Para elegir otro sistema se utiliza el comando <code class="language-plaintext highlighter-rouge">SELECT_CHAR_KIND("OTRO_SYSTEMA")</code>, por ejemplo:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="k">implicit</span><span class="w"> </span><span class="k">none</span><span class="w">
+  </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s1">'ISO_10646'</span><span class="p">)</span><span class="w">
+  </span><span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="o">=</span><span class="mi">26</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">mensaje</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="estructuras">Estructuras</h2>
+
+<p>Una estructura es una colección de una ó más variables agrupadas bajo el mismo nombre. Son una buena herramienta para organizar datos complejos</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span><span class="w"> </span><span class="n">punto</span><span class="w">
+    </span><span class="kt">real</span><span class="w">  </span><span class="p">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="w">
+</span><span class="k">end</span><span class="w"> </span><span class="k">type</span><span class="w">
+
+
+</span><span class="c1">! Definción de estructura "rectangulo"</span><span class="w">
+</span><span class="k">type</span><span class="w"> </span><span class="n">rectangulo</span><span class="err">{</span><span class="w">
+	</span><span class="k">type</span><span class="p">(</span><span class="n">punto</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">pt1</span><span class="w">
+	</span><span class="k">type</span><span class="p">(</span><span class="n">punto</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">pt2</span><span class="w">
+</span><span class="k">end</span><span class="w"> </span><span class="k">type</span><span class="w">
+
+</span></code></pre></div></div>
+
+<p>Para llamar a una variable dentro de una estructura la sintaxis es:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span><span class="p">(</span><span class="n">rectangulo</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">pantalla</span><span class="w">
+
+</span><span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="s2">"Vertice de pantalla: "</span><span class="p">,</span><span class="n">pantalla</span><span class="o">%</span><span class="n">pt1</span><span class="o">%</span><span class="n">x</span><span class="p">,</span><span class="n">pantalla</span><span class="o">%</span><span class="err">$</span><span class="n">pt1</span><span class="o">%</span><span class="n">y</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Es posible definir funciones sobre estructuras:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="w"> </span><span class="n">punto</span><span class="w"> </span><span class="n">makePoint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span><span class="w">
+	</span><span class="k">implicit</span><span class="w"> </span><span class="k">none</span><span class="w">
+	</span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">punto</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">tmp</span><span class="w">
+        </span><span class="kt">real</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w">
+	</span><span class="n">tmp</span><span class="o">%</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="w">
+	</span><span class="n">tmp</span><span class="o">%</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="w">
+</span><span class="k">end</span><span class="w"> </span><span class="k">function</span><span class="w">
+</span></code></pre></div></div>
+

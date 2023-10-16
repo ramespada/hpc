@@ -3,7 +3,7 @@ layout: lecture
 title: Fortran 
 descripcion: Tutorial de Fortran
 nav_order: 4
-date: 2023-01-21
+date: 2023-01-14
 ready: true
 video:
   aspect: 56.25

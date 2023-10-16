@@ -1,0 +1,555 @@
+<h1 id="c">C</h1>
+<blockquote>
+  <p>C es un lenguaje de programación de propósito general originalmente desarrollado por Dennis Ritchie entre 1969 y 1972 en los Laboratorios Bell, como evolución del anterior lenguaje B, a su vez basado en BCPL. Al igual que B, es un lenguaje orientado a la implementación de sistemas operativos, concretamente Unix.</p>
+</blockquote>
+
+<h2 id="hola-mundo">Hola mundo!</h2>
+
+<p>Para escribir un programa en C, se crea un archivo de texto con extensión <strong><code class="language-plaintext highlighter-rouge">.c</code></strong> con cualquier editor de texto y adentro se escribe el programa, por ejemplo:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">printf</span><span class="p">(</span><span class="s">"Hola mundo!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="compilación-y-ejecución">Compilación y ejecución</h2>
+
+<p>Para compilar un programa escrito en C (usando <code class="language-plaintext highlighter-rouge">gcc</code>), se escribe en la terminal:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc 00holamundo.c
+</code></pre></div></div>
+
+<p>se va a crear un ejecutable con nombre  <code class="language-plaintext highlighter-rouge">a.out</code>, para ejecutarlo:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./a.out
+</code></pre></div></div>
+
+<p>si se desea que el ejecutable tenga otro nombre se escribe: <code class="language-plaintext highlighter-rouge">gcc 00holamundo.c -o mi_programa.exe</code></p>
+
+<h2 id="estructura">Estructura</h2>
+<p>Esta es la estructura general de un progama en C:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+</span><span class="c1">// esto es un comentario</span>
+<span class="cm">/* esto es un comentario 
+   multi-linea
+*/</span>
+
+<span class="c1">//definicion de constantes simbolicas</span>
+<span class="cp">#define a 10
+#define saludo "Hola"
+</span>
+<span class="c1">//variables externas/globales</span>
+<span class="kt">int</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="c1">//subrutinas y funciones</span>
+<span class="kt">void</span> <span class="nf">ask</span><span class="p">(){</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Cual es tu nombre? "</span><span class="p">);</span>	<span class="c1">//stdout</span>
+<span class="p">}</span>
+
+<span class="c1">// funcion main </span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+           
+        <span class="c1">//Declaracion de variables:</span>
+        <span class="kt">char</span> <span class="n">nombre</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="s">"estimado"</span><span class="p">;</span>
+	
+	<span class="c1">//Instrucciones del programa:</span>
+        <span class="n">ask</span><span class="p">();</span>
+	<span class="n">scanf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span><span class="n">nombre</span><span class="p">);</span>		<span class="c1">//stdin</span>
+        
+	<span class="n">printf</span><span class="p">(</span><span class="s">"Hola %s! Como va?</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">nombre</span><span class="p">);</span>
+        
+   	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>	
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>con <code class="language-plaintext highlighter-rouge">#include</code> se llaman a modulos ó librerias externas que posibilitan el uso de funciones y subrutinas especificas para el distintos usos.
+Entre las más utilizadas se encuentran:</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;	//input / output
+#include &lt;stdlib.h&gt;	//
+#include &lt;math.h&gt;	//aritmetica
+#include &lt;string.h&gt;	//strings
+</span></code></pre></div></div>
+
+<h2 id="datatypes"><em>Datatypes</em></h2>
+
+<p>Los tipos de datos básicos en C son:</p>
+<ul>
+  <li>Enteros (<code class="language-plaintext highlighter-rouge">int</code>)</li>
+  <li>Punto flotante  (<code class="language-plaintext highlighter-rouge">float</code>)</li>
+  <li>Caracter y strings (<code class="language-plaintext highlighter-rouge">char</code>)</li>
+</ul>
+
+<p>Con <code class="language-plaintext highlighter-rouge">int</code> se representan numeros enteros, e incluso variables lógicas ó <em>booleanos</em> (tipo true ó false, donde 0=false y 1=true).</p>
+
+<p>Se definen ` int nombre_variable;` y se pueden realizar opreaciones lógicas (sólo utilizando 0 y 1), operaciones relacionales, operaciones aritméticas e intrínsecas.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">p</span><span class="p">,</span><span class="n">q</span><span class="p">;</span>
+
+<span class="c1">//	op. logicas</span>
+<span class="n">p</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">q</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"     p = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">p</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"     q = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">q</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"    !p = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="o">!</span><span class="n">p</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">" p &amp; q = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">p</span><span class="o">&amp;</span><span class="n">q</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">" p | q = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">p</span><span class="o">|</span><span class="n">q</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"p == q = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">p</span><span class="o">==</span><span class="n">q</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"p != q = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">p</span><span class="o">!=</span><span class="n">q</span><span class="p">);</span>
+
+<span class="c1">//	op. relacionales</span>
+<span class="kt">int</span> <span class="n">n</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span><span class="n">m</span><span class="o">=</span><span class="mi">7</span><span class="p">;</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"     n = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"     m = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">m</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"n == m = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="o">==</span><span class="n">m</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"n != m = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="o">!=</span><span class="n">m</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"n &lt;  m = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="o">&lt;</span> <span class="n">m</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"n &lt;= m = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="o">&lt;=</span><span class="n">m</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"n &gt;  m = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="o">&gt;</span> <span class="n">m</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"n &gt;= m = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="o">&gt;=</span><span class="n">m</span><span class="p">);</span>
+
+<span class="c1">//	op. aritmeticas</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"n + m = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="n">m</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"n / m = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="o">/</span><span class="n">m</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"n %% m = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="o">%</span><span class="n">m</span><span class="p">);</span>
+
+<span class="c1">//	op. intrinsecas</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"Op. intrinsecas:</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"abs(n) = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">abs</span><span class="p">(</span><span class="n">n</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>Con <code class="language-plaintext highlighter-rouge">float</code> se representan los números “reales” (de precisión finita), se definen <code class="language-plaintext highlighter-rouge">float mi_variable;</code> y sirven para hacer opraciones artiméticas y operaciones intrinsecas más complejas.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+<span class="n">x</span><span class="o">=</span><span class="mf">1.2e-1</span><span class="p">;</span>
+<span class="n">y</span><span class="o">=-</span><span class="mi">2</span><span class="p">.</span><span class="mi">78</span><span class="p">;</span>
+
+<span class="c1">// op. aritméticas</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"    x = %6.2f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">x</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"    y = %7.3f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">y</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"x - y = %7.3f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"x * y = %7.3f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">);</span>
+
+<span class="c1">// op. intrínsecas</span>
+<span class="kt">double</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">;</span>
+<span class="n">xx</span><span class="o">=</span><span class="mf">1.2e-1</span><span class="p">;</span>
+<span class="n">yy</span><span class="o">=-</span><span class="mi">2</span><span class="p">.</span><span class="mi">78</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"pow(x,y) = %7.3f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">));</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"sqrt(x) = %7.3f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xx</span><span class="p">));</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"exp(x) = %7.3f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">exp</span><span class="p">(</span><span class="n">xx</span><span class="p">));</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"log(x) = %7.3f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">log</span><span class="p">(</span><span class="n">xx</span><span class="p">));</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"sin(x) = %7.3f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span><span class="p">));</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"cos(x) = %7.3f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">cos</span><span class="p">(</span><span class="n">xx</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>Con <code class="language-plaintext highlighter-rouge">char</code> se pueden representar letras y palabras.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="kt">char</span><span class="o">*</span> <span class="n">letra</span> <span class="o">=</span> <span class="s">"a"</span><span class="p">;</span>
+	<span class="kt">char</span> <span class="n">str1</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span><span class="o">=</span><span class="s">"asdasd asddsa"</span><span class="p">;</span>
+
+	<span class="n">printf</span><span class="p">(</span><span class="s">"Esto es una letra %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">letra</span><span class="p">);</span>
+	<span class="n">printf</span><span class="p">(</span><span class="s">"Esto es un string %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">str1</span><span class="p">);</span>
+
+<span class="cm">/*
+	char c;
+	c = getchar();
+	putchar(c);
+        
+         character*30       :: str1="Esto es un string       "
+         character (len=30) :: str2=", este es otro string.  "
+  
+         print*, str1
+         
+         !Operaciones con CHARACTER:
+         print*, str1(9:25)
+         print*, str1//str2
+         print*, trim(str1)//trim(str2)
+  
+         print*, len(str1)
+         print*, len(trim(str1))
+
+         print*, repeat(str2(11:15),4)
+         
+         print*, scan(str1, 'aeiou')
+         print*, index(str2, 'otro',back=.true.)
+         print*, verify(str1,'Esto es un strang')
+*/</span>
+   	<span class="kt">char</span> <span class="n">srcString</span><span class="p">[</span><span class="mi">40</span><span class="p">];</span>
+   	<span class="kt">char</span> <span class="n">destString</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+  
+   	<span class="n">memset</span><span class="p">(</span><span class="n">destString</span><span class="p">,</span> <span class="sc">'\0'</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">destString</span><span class="p">));</span>
+   	<span class="n">strcpy</span><span class="p">(</span><span class="n">srcString</span><span class="p">,</span> <span class="s">"Este es un string"</span><span class="p">);</span>
+   	<span class="n">strcpy</span><span class="p">(</span><span class="n">destString</span><span class="p">,</span> <span class="n">srcString</span><span class="p">);</span>
+   	<span class="n">printf</span><span class="p">(</span><span class="s">"String resultante: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">destString</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Se pueden realizar también conversión de variables a distintos datatypes:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Type conversion:</span>
+<span class="cm">/* bool -&gt; char -&gt; short int -&gt; int -&gt; unsigned int -&gt; long -&gt; unsigned -&gt; long long -&gt; float -&gt; double -&gt; long double 	*/</span>
+<span class="c1">// char to int</span>
+<span class="kt">char</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s">"j"</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">i</span><span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"letra: %s; int %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">atoi</span><span class="p">(</span><span class="n">a</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h2 id="input--output">Input / Output</h2>
+
+<p>Los standard input/output (abreviados: stdin/stdout), son las formas más símples de transferencia de información entre la computadora y el usuario.</p>
+
+<p>El <em>stdin</em> es el que está vinculado a las entradas que damos desde la consola con nuestro teclado. En C el ingreso de stdinput se reclama con la función <code class="language-plaintext highlighter-rouge">scanf</code>:</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">scanf</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">variable</span><span class="p">);</span>
+</code></pre></div></div>
+<p>donde el primer atributo (<em>fmt</em>) es un string que representa la forma ó formato de la variable a leer, y el segundo atributo es la variable donde se va a guardar la entrada.</p>
+
+<p>El formato puede tener la siguientes formas:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>fmt</th>
+      <th>datatype</th>
+      <th>ejemplo</th>
+      <th>descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>%nd</td>
+      <td><code class="language-plaintext highlighter-rouge">int</code></td>
+      <td><code class="language-plaintext highlighter-rouge">'%6d' </code></td>
+      <td>entero con <em>n</em> digitos</td>
+    </tr>
+    <tr>
+      <td>%n.mf</td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td><code class="language-plaintext highlighter-rouge">'%7.2f'</code></td>
+      <td>punto flotante con <em>n</em> digitos y <em>m</em> decimales</td>
+    </tr>
+    <tr>
+      <td>%c</td>
+      <td><code class="language-plaintext highlighter-rouge">char</code></td>
+      <td><code class="language-plaintext highlighter-rouge">'%c'</code></td>
+      <td>letra</td>
+    </tr>
+    <tr>
+      <td>%ns</td>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">'%10s'</code></td>
+      <td>string de longitud <em>n</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>La forma mas simple de retornar informacion es el <em>stout</em>, que serian los mensajes que aparecen en consola. Para mandar cosas al stout podemos usar:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="n">printf</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">mensaje_a_mostrar</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>donde <em>fmt</em> es el formato (de la misma forma que para <code class="language-plaintext highlighter-rouge">scanf</code>), y el segundo atributo es el mensaje ó valor a mostrar en pantalla.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+  
+  <span class="kt">char</span> <span class="n">nombre</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span><span class="s">"jose"</span><span class="p">;</span>
+  <span class="kt">char</span> <span class="n">apellido</span><span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="n">mensaje</span><span class="p">[</span><span class="mi">15</span><span class="p">];</span>
+  <span class="kt">int</span> <span class="n">edad</span><span class="o">=</span><span class="mi">28</span><span class="p">;</span>
+  <span class="kt">float</span> <span class="n">altura</span><span class="o">=</span><span class="mi">1</span><span class="p">.</span><span class="mi">65</span><span class="p">,</span> <span class="n">peso</span><span class="o">=</span><span class="mi">63</span><span class="p">;</span>
+
+  <span class="c1">//STDIN/STDOUT</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">"Esto es un stdout</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">"Dame un stdin: "</span><span class="p">);</span> <span class="n">scanf</span><span class="p">(</span><span class="s">"%15s"</span><span class="p">,</span><span class="n">mensaje</span><span class="p">);</span>
+   
+  <span class="c1">//FMT:</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">"Mi nombre es: %8s, y tengo %5d años y peso %5.2f.</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">nombre</span><span class="p">,</span> <span class="n">edad</span><span class="p">,</span><span class="n">peso</span><span class="p">);</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">"Ingresa tu apellido:"</span><span class="p">);</span> <span class="n">scanf</span><span class="p">(</span><span class="s">"%8s"</span><span class="p">,</span><span class="n">apellido</span><span class="p">);</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">"Mi nombre es: %8s %8s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">nombre</span><span class="p">,</span><span class="n">apellido</span><span class="p">);</span>
+
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>   
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="controladores-condicionales-y-loops">Controladores (Condicionales y Loops)</h2>
+
+<p>El condicional más utilizado es <em>if .., else.</em></p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">){</span> 
+             <span class="n">printf</span><span class="p">(</span> <span class="s">"x es positivo</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+	     <span class="n">signo</span> <span class="o">=</span> <span class="s">"+"</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+             <span class="n">printf</span><span class="p">(</span> <span class="s">"x es negativo</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+	     <span class="n">signo</span> <span class="o">=</span> <span class="s">"-"</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">else</span><span class="p">{</span>
+             <span class="n">printf</span><span class="p">(</span> <span class="s">"x es cero</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+	     <span class="n">signo</span> <span class="o">=</span> <span class="s">"0"</span><span class="p">;</span>
+   <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Otra forma de aplicar condicionales es mediante switches (case):</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="k">switch</span><span class="p">(</span> <span class="n">signo</span> <span class="p">){</span>
+	   <span class="k">case</span> <span class="sc">'+'</span><span class="p">:</span>
+         <span class="n">printf</span><span class="p">(</span> <span class="s">"x es positivo</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+	   <span class="k">case</span> <span class="sc">'-'</span><span class="p">:</span>
+         <span class="n">printf</span><span class="p">(</span> <span class="s">"x es negativo</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+	   <span class="nl">default:</span>
+         <span class="n">printf</span><span class="p">(</span> <span class="s">"x es cero</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="err">*/</span>
+</code></pre></div></div>
+
+<p>Para realizar iteraciones (loops), se puede utilziar la estructura <em>for</em></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+   <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">){</span>
+
+	<span class="n">printf</span><span class="p">(</span><span class="s">"%3d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+   <span class="p">}</span>
+</code></pre></div></div>
+<p>Otra forma de loop es <em>while</em>:</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="k">while</span> <span class="p">(</span><span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">){</span>
+
+	<span class="n">printf</span><span class="p">(</span><span class="s">"%3d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+   	<span class="o">--</span><span class="n">i</span><span class="p">;</span>
+   <span class="p">}</span> 
+</code></pre></div></div>
+
+<h2 id="funciones-y-subrutinas">Funciones y subrutinas:</h2>
+
+<p>Las <strong>funciones</strong> se definen:</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="nf">suma</span><span class="p">(</span><span class="kt">float</span> <span class="n">arg1</span><span class="p">,</span> <span class="kt">float</span> <span class="n">arg2</span><span class="p">){</span>
+	<span class="k">return</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span><span class="p">;</span>
+<span class="p">}</span>
+ 
+</code></pre></div></div>
+
+<p>Las ** subrutinas ** son funciones que cuyo dominio es vacío, por lo que no retornan ningún valor:</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">suma2</span><span class="p">(</span><span class="kt">float</span> <span class="n">arg1</span><span class="p">,</span> <span class="kt">float</span> <span class="n">arg2</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">arg3</span><span class="p">)</span> <span class="p">{</span>
+	 <span class="o">*</span><span class="n">arg3</span><span class="o">=</span><span class="n">arg1</span><span class="o">+</span><span class="n">arg2</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>Para llamar a funciones y subrutinas en la función main:</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+	<span class="kt">float</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">;</span>
+        <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">.;</span>
+        <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">.;</span>
+        <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">.;</span>
+        
+	<span class="n">printf</span><span class="p">(</span><span class="s">"%4f + %4f  = %4f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">suma</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">));</span>
+               
+        <span class="n">suma2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="o">&amp;</span><span class="n">c</span><span class="p">);</span>
+	
+	<span class="n">printf</span><span class="p">(</span><span class="s">"%4f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+ 
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>	
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="modulos">Modulos:</h2>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include&lt;stdio.h&gt;
+#include "06mod_ext.h"
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+	
+	<span class="kt">float</span> <span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">.</span><span class="mi">23000</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="s">"pi=%f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pi</span><span class="p">);</span>
+	<span class="n">printf</span><span class="p">(</span><span class="s">"area=2*pi*r*r=%f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">area</span><span class="p">(</span><span class="n">r</span><span class="p">));</span>
+
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="input--output-ii">Input / Output II</h2>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+
+   <span class="c1">//open / write/ close file</span>
+   <span class="kt">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="o">=</span><span class="n">fopen</span><span class="p">(</span><span class="s">"asa.txt"</span><span class="p">,</span><span class="s">"rw"</span><span class="p">);</span>
+   <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
+
+   <span class="n">fp</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="s">"test.txt"</span><span class="p">,</span> <span class="s">"w+"</span><span class="p">);</span>
+   <span class="n">fprintf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s">"Dejo un mensaje...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+   <span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+
+   <span class="c1">//read</span>
+   <span class="n">fp</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="s">"test.txt"</span><span class="p">,</span> <span class="s">"r"</span><span class="p">);</span>
+   <span class="n">fscanf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s">"%s"</span><span class="p">,</span> <span class="n">buffer</span><span class="p">);</span>   <span class="n">printf</span><span class="p">(</span><span class="s">"1 : %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">buffer</span> <span class="p">);</span>
+   <span class="n">fgets</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="p">(</span><span class="kt">FILE</span><span class="o">*</span><span class="p">)</span><span class="n">fp</span><span class="p">);</span>   <span class="n">printf</span><span class="p">(</span><span class="s">"2: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">buffer</span> <span class="p">);</span>
+   <span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="arrays">Arrays:</h2>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;sdtio.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+
+	<span class="kt">int</span> <span class="n">n</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">3</span> <span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">};</span>
+	<span class="kt">float</span> <span class="n">v</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">.</span><span class="mo">001</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">.</span><span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">.</span><span class="mi">0</span> <span class="p">}</span>
+
+	<span class="kt">float</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="p">{</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span>
+	       		<span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span>
+		       	<span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span> <span class="p">,</span><span class="mi">3</span><span class="p">.</span><span class="mi">0</span><span class="p">}</span>
+
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cm">/*
+   
+   character(len=20), dimension(5) :: frutas
+   integer :: n(3)
+   real    :: v(3)
+   real    :: A(3,3)
+   integer :: i
+   
+   !Acceso y asignacion de valores:
+   frutas(1)='manzana'
+   frutas(2)='banana'
+   frutas(4)='kiwi'
+           
+   print*, frutas
+   print*, frutas(4)
+   print*, frutas(2:4)
+   
+   !loops:
+   do i=1,3,1
+           v(i)=i*0.45
+   end do
+   print*, v
+   !loops implicitos
+   n=(/ (i,i=1,9,3) /)
+   print*,n
+   v=(/ (i,i=1, 3,1)  /)*0.45
+   print*, v
+   v=(/ (i*0.45,i=1, 3,1)  /)  !otra forma
+   print*, v
+   
+   A= 0.                       !todos ceros
+   print*,"Nula:"
+   write(*,'(3(f8.2))') A
+   
+   print*, "Identidad:"
+   A(1,:)=(/ 1.0, 0.0, 0.0 /)
+   A(2,:)=(/ 0.0, 1.0, 0.0 /)
+   A(3,:)=(/ 0.0, 0.0, 1.0 /)
+   write(*,'(3(f8.2))') A
+   
+   print*, "Matriz A:"
+   A = reshape((/(i*0.25,i=1,size(A))/), shape(A))
+   write(*,'(3(f8.2))') A
+   
+   !Aritmética + - * /   (entre aquellos de misma forma!!)
+   print*,'A+A' 
+   write(*,'(3(f8.2))') A+A
+   print*,'A*A'
+   write(*,'(3(f8.2))') A*A
+   
+   !Intrinsecos a arrays:
+   print*,'sum(A)', sum(A)
+   print*,'product(A)',product(A)
+   
+   print*,'size(A)', size(A)
+   print*,'shape(A)',shape(A)
+   
+   print*,'lbound(A)',lbound(A)
+   print*,'ubound(A)',ubound(A)
+   
+   print*,'minval(A)',minval(A)
+   print*,'maxval(A)',maxval(A)
+   print*,'minloc(A)',minloc(A)
+   print*,'maxloc(A)',maxloc(A)
+   
+   !Operaciones relacionales
+   print*,'all(A&lt;0.3)',all(A&lt;0.3)
+   print*,'any(A&lt;0.6)',any(A&lt;0.6)
+   print*,'count(A&gt;0.4)',count(A&gt;0.4)
+*/</span>
+</code></pre></div></div>
+
+<h2 id="memoria-y-punteros">Memoria y punteros</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span>
+<span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">y</span><span class="p">){</span>
+	<span class="kt">int</span> <span class="n">temp</span><span class="p">;</span>
+	
+	<span class="n">temp</span><span class="o">=*</span><span class="n">x</span><span class="p">;</span>
+	<span class="o">*</span><span class="n">x</span><span class="o">=*</span><span class="n">y</span><span class="p">;</span>
+	<span class="o">*</span><span class="n">y</span><span class="o">=</span><span class="n">temp</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">()</span> <span class="p">{</span>
+
+   <span class="kt">int</span>  <span class="n">var</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>   <span class="cm">/* actual variable declaration */</span>
+   <span class="kt">int</span>  <span class="o">*</span><span class="n">ip</span><span class="p">;</span>        <span class="cm">/* ip es un pointer */</span>
+
+   <span class="n">ip</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">var</span><span class="p">;</span>       <span class="cm">/* guardo adress de var en ip*/</span>
+
+   <span class="n">printf</span><span class="p">(</span><span class="s">"Valor de var: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">var</span>  <span class="p">);</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">"Address de var: %x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">var</span>  <span class="p">);</span>
+
+   <span class="cm">/* address stored in pointer variable */</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">"Address guardada en la variable ip: %x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ip</span> <span class="p">);</span>
+
+   <span class="cm">/* access the value using the pointer */</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">"Value de *ip: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">ip</span> <span class="p">);</span>		<span class="c1">// cuando aplico * a un pointer, retorna el valor guardado en el adress que guarda el pointer</span>
+
+
+
+	<span class="kt">int</span> <span class="n">a</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="s">"a=%d, b=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+	<span class="n">swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+	<span class="n">printf</span><span class="p">(</span><span class="s">"a=%d, b=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="estructuras">Estructuras</h2>
+
+<p>Unaestructura es una colección de una ó más variables agrupadas bajo el mismo nombre. Son una buena herramienta para organizar datos complejos</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Definición de estructura "punto"</span>
+<span class="k">struct</span> <span class="n">punto</span><span class="p">{</span>
+	<span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Definción de estructura "rectangulo"</span>
+<span class="k">struct</span> <span class="n">rect</span><span class="p">{</span>
+	<span class="k">struct</span> <span class="n">punto</span> <span class="n">pt1</span><span class="p">;</span>
+	<span class="k">struct</span> <span class="n">punto</span> <span class="n">pt2</span><span class="p">;</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<p>Para llamar a una variable dentro de una estructura la sintaxis es:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">rect</span> <span class="n">pantalla</span><span class="p">;</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"Vertice de pantalla: (%d,%d)"</span><span class="p">,</span> <span class="n">pantalla</span><span class="p">.</span><span class="n">pt1</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pantalla</span><span class="p">.</span><span class="n">pt1</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Es posible definir funciones sobre estructuras:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">punto</span> <span class="nf">makePoint</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">){</span>
+	<span class="k">struct</span> <span class="n">point</span> <span class="n">temp</span><span class="p">;</span>
+	<span class="n">temp</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">;</span>
+	<span class="n">temp</span><span class="p">.</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">;</span>
+	<span class="k">return</span> <span class="n">temp</span><span class="p">;</span>
+<span class="p">};</span>
+
+</code></pre></div></div>

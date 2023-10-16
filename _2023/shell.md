@@ -1,6 +1,6 @@
 ---
 layout: lecture
-date: 2023-01-21
+date: 2023-01-01
 ready: true
 video:
   aspect: 56.25

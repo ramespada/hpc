@@ -1,0 +1,293 @@
+<h1 id="message-passing-interface-mpi">Message Passing Interface (MPI)</h1>
+
+<blockquote>
+  <p>MPI es una especificación para desarrolladores y usuarios de librerias de pasaje de mensajes. Su objetivo es ser una interfaz práctica, portable, eficiente y flexible. Una gran ventaja de MPI es que está <strong>adaptada para cualquier arquitectura de memoria</strong> (distribuida, compartida e híbrida). Implementaciones de MPI: MPICH, OpenMPI, Intel MPI. Tiene soporte para C, C++ y Fortran.</p>
+</blockquote>
+
+<p>Para invocar la libreria usamos:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>C</th>
+      <th>fortran</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#include "mpi.h"</code></td>
+      <td><code class="language-plaintext highlighter-rouge">include 'mpif.h</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Luego la sintaxis es casi idéntica para C/C++ y Fortran. En C, los comandos siguen la siguiente sintaxis:</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rc</span> <span class="o">=</span> <span class="n">MPI_Xxxxx</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="p">...)</span>
+</code></pre></div></div>
+
+<p>En fortran la sintaxis es:</p>
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">call</span><span class="w"> </span><span class="n">MPI_XXXXX</span><span class="p">(</span><span class="n">param</span><span class="p">,</span><span class="err">...</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="ejemplo-simple">Ejemplo simple:</h3>
+
+<p>Un programa  <em>hola mundo</em> paralelizado con MPI en fortran sería:</p>
+
+<div class="language-fortran highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">program</span><span class="w"> </span><span class="n">hola</span><span class="w">
+    </span><span class="k">implicit</span><span class="w"> </span><span class="k">none</span><span class="w">
+    </span><span class="kt">integer</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">ierr</span><span class="w">
+
+    </span><span class="k">include</span><span class="w"> </span><span class="s1">'mpif.h'</span><span class="w">
+
+    </span><span class="c1">!Código serial...</span><span class="w">
+    </span><span class="k">call</span><span class="w"> </span><span class="n">MPI_INIT</span><span class="p">(</span><span class="n">ierr</span><span class="p">)</span><span class="w">
+        </span><span class="k">print</span><span class="w"> </span><span class="s1">'("Hola mundo!")'</span><span class="w">
+    </span><span class="k">call</span><span class="w"> </span><span class="n">MPI_FINALIZE</span><span class="p">(</span><span class="n">ierr</span><span class="p">)</span><span class="w">
+    </span><span class="c1">!Código serial...</span><span class="w">
+</span><span class="k">end</span><span class="w"> </span><span class="k">program</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Para compilarlo:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> mpif90  hola_mundo.f 
+</code></pre></div></div>
+
+<p>Luego lo ejecutamos así:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$&gt;</span> mpirun <span class="nt">-np</span> 4 a.out 
+</code></pre></div></div>
+
+<h3 id="comunicadores-grupos-y-rank">Comunicadores, Grupos y <code class="language-plaintext highlighter-rouge">rank</code></h3>
+
+<p>MPI usa unos objetos llamados <strong>comunicadores</strong> (<code class="language-plaintext highlighter-rouge">comm</code>) y <strong>grupos</strong> (<code class="language-plaintext highlighter-rouge">group</code>) para definir que colección de procesos se comunican con otros.</p>
+
+<p>Los <em>comunicadores</em> definen un <em>grupo</em> de procesos que tienen la capacidad de comunicarse entre si. En este grupo a cada proceso se le asigna un <code class="language-plaintext highlighter-rouge">rank</code> único (también llamado <em>task ID</em>) que le permite comunicarse explicitamente con el resto.</p>
+
+<p>La mayoría de las rutinas de MPI requieren que se especifique el comunicador como argumento.
+Hay un type <code class="language-plaintext highlighter-rouge">MPI_Comm</code> y hay un comunicador predeterminado <code class="language-plaintext highlighter-rouge">MPI_COMM_WORLD</code>.</p>
+
+<p>Dentro de cada comunicador, cada proceso tiene su propio y único identificador. Cuando un proceso se inicia un identificador (un número entero) es asignado por el sistema. A los rangos aveces tambien se los llaman <em>task ID</em>. Los rangos son contiguos y empiezan en 0.</p>
+
+<p>La comunicación se basa en operaciones de envio (<code class="language-plaintext highlighter-rouge">send</code>) y recepción (<code class="language-plaintext highlighter-rouge">receive</code>) entre procesos.</p>
+
+<p>Se utilizan para especificar el origen y destino de los mensajes. Comunmente se usa condicionalmente por la aplicación para controlar la ejecución del programa (so rank==0 hacer esto / si rank==1 hacer esto otro)</p>
+
+<h4 id="manejo-de-errores">Manejo de Errores</h4>
+<p>Generalmente las rutinas MPI retornan un parametro de error, sin embargo el comportamiento standard de MPI es abortar si un error ocurre.</p>
+
+<h3 id="rutinas-de-manejo-de-ambiente">Rutinas de manejo de ambiente:</h3>
+
+<p>Principales rutinas en MPI:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">MPI_INIT(*ierr*) </code>: Inicia ambiente de ejecución.</li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_FINALIZE(*ierr*)</code>: Termina la ejecución de MPI.</li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_COMM_SIZE(*comm, size, ierr*)</code> Retrona el numero de procesos especificados en el comunicador.</li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_COMM_RANK(*comm, size, ierr*)</code> Retorna el rango del comunicador.</li>
+</ul>
+
+<p>Otras rutinas:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">MPI_ABORT(*comm,errorcode,ierr*)</code> Finaliza el proceso asociado al comunicador.</li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_GET_PROCESOR_NAME(*name, resultlength,ierr*) </code> Retorna el nombre del proceso y el tamaño del nombre.</li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_GET_VERSION(*version, subversion, ierr*) </code> Devuelve la version de MPI que está siendo implementada por al librería.</li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_INITIALIZED(*flag, ierr*) </code> Indica si l <code class="language-plaintext highlighter-rouge">MPI_INIT</code> ha sido llamada. (<code class="language-plaintext highlighter-rouge">flag</code> es un booleano)</li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_WTIME() </code> Retorna el tiempo transcurrido  (en segundos) en la llamada al proceso.</li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_WTICK() </code> retorna la resolución en segundos de <code class="language-plaintext highlighter-rouge">MPI_Wtime</code>.</li>
+</ul>
+
+<h2 id="comunicación-punto-a-punto">Comunicación punto a punto</h2>
+<p>Comunicación entre dos tasks distintos. Un task realiza la operación de envío y el otro la de recepción.
+Hay distintos tipos de rutinas de envío y recepción usadas para distintos propositos. Por ejemplo:</p>
+<ul>
+  <li>Envío sincorizado</li>
+  <li>Envío/recivo bloqueador</li>
+  <li>Envío amortiguado</li>
+  <li>Envío/recivo combinado</li>
+  <li>Envío <em>“Ready”</em></li>
+</ul>
+
+<p>Cualquier tipo de rutina de envío está asociada a una de recivo.</p>
+
+<p>MPI también provée rutinas asociadas a operaciones envío-recivo tal como aquellas usadas para mensajes de espera de arrivo ó probar si un mensaje ha llegado.</p>
+
+<h4 id="buffering">Buffering</h4>
+<p>Idealmente, toda operación de envío está perfectamente sincronizada con la operación de recibo. Esto raramente ocurre. De alguna forma u otra MPI tiene que ser capaz de manejarse con datos almacenados cuando un dos tasks están fuera de sincronía.</p>
+
+<p>Por ejemplo:</p>
+<ul>
+  <li>Una operación de envío ocurre 5 segundos antes de que la recepción esté lista. Dónde se almacena el mensaje hsata que la recepción está lista?</li>
+  <li>Multiples envíos llegan al mismo task receptor que solo puede aceptar una a la vez. Que pasa con los mensajes en espera?</li>
+</ul>
+
+<p>MPI decide que pasa con estos datos. Tipicamente hay un area buffer del sistema reservada para sostener el transito.</p>
+
+<p>El espacio buffer:</p>
+<ul>
+  <li>No está a la vista del usuario (lo maneja la librería MPI).</li>
+  <li>Usa recursoss finitos.</li>
+  <li>Suele ser misterioso y no bien documentado.</li>
+  <li>Puede existir en el emisor, receptor ó ambos.</li>
+  <li>Tiene un impacto en la performance ya que habilita que la comunicación sea asincrónica.</li>
+</ul>
+
+<h4 id="blocking">Blocking</h4>
+<p>Las rutinas de MPI <em>point-to-point</em> puedn ser usadas en modo <em>blocking</em> ó <em>non-blocking</em>.</p>
+<ul>
+  <li><strong>Blocking</strong>
+    <ul>
+      <li>Una rutina de envío no <em>vuelve</em> hasta que esté a salvo de modificar los datos envíados para reusarse. A salvo significa que no afecta la información que debe ser recibida por el task.</li>
+      <li>Puede ser sincrónica ó asincrónica.</li>
+      <li>Una recpeción bloqueada solo vuelve luego de que la información haya llegado y esté lista para ser usada por el programa.</li>
+    </ul>
+  </li>
+  <li><strong>Non-blocking</strong>
+    <ul>
+      <li>Las rutinas emisión y recepción no bloqueadas se comportan similar. Estas vuelven inmediatamente. No esperan a ningun evento de la comunicación para completarse.</li>
+      <li>Estas rutinas simplemente le piden a la librería de MPI que haga alguna operación cuando esté disponible.</li>
+      <li>No es un seguro modificar el buffer (el espacio de variables) hasta que uno sepa feacientemente que el pedido de una operación <em>non-blocking</em> haya sido efectuada por la librería. Para ello existen rutinas de <em>espera</em>.</li>
+      <li>Estas operaciones se realizan principalmente para superponer computación con comunicación y explotar las posibles ganancias en performance.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="orden--fairness">Orden &amp; Fairness</h4>
+<p><strong>Orden</strong>
+    + MPI garantiza que los mensajes no se adelanten los unos a los otros.</p>
+
+<p><strong>Justicia / Fairnes</strong>
+      + MPI no garantiza <em>justicia</em>, esto quiere decir que si dos tasks envían una señal al mismo taks, entonces sólo uno de los mensajes se completará.</p>
+
+<h4 id="rutinas-y-argumentos">Rutinas y argumentos</h4>
+
+<p>Las comunicaciones punto a punto (por ejemplo <code class="language-plaintext highlighter-rouge">MPI_Send</code> y <code class="language-plaintext highlighter-rouge">MPI_Recv</code>) generalmente tienen la siguiente lista de argumentos:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">**buffer**</code>  address space del programa que referencia los datos a ser enviados ó recibidos. En muchos casos es simplemente el nombre de la variable que es enviada/recibida.</li>
+  <li><code class="language-plaintext highlighter-rouge">**count** </code>  Indica el numero de elementos que son eviados.</li>
+  <li><code class="language-plaintext highlighter-rouge">**type**</code>    Por razones de portabilidad MPI predefine sus propios <em>data types</em>, para fortran los más importantes son: <code class="language-plaintext highlighter-rouge">MPI_LOGICAL</code>, <code class="language-plaintext highlighter-rouge">MPI_INTEGER</code>, <code class="language-plaintext highlighter-rouge">MPI_REAL</code>, <code class="language-plaintext highlighter-rouge">MPI_DOUBLE_PRECISION</code>, <code class="language-plaintext highlighter-rouge">MPI_COMPLEX</code>, <code class="language-plaintext highlighter-rouge">MPI_CHARACTER</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">**dest**</code>   (<em>destino</em>) Se especifica como el rango del proceso recibido.</li>
+  <li><code class="language-plaintext highlighter-rouge">**source**</code> (<em>origen</em>) Se especifica como el rango del proceso enviado.</li>
+  <li><code class="language-plaintext highlighter-rouge">**tag**</code>    Numero arbitrario entero no negativo, asignado por el programador para identificar el mensaje univocamente.</li>
+  <li><code class="language-plaintext highlighter-rouge">**comm**</code>   El comunicador.</li>
+  <li><code class="language-plaintext highlighter-rouge">**status**</code> Para una operación de recepción indica el origen del mensaje y el tag del mismo. En fortran es un array de enteros de tamaño <code class="language-plaintext highlighter-rouge">MPI_STATUS_SIZE()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">**request**</code> Para emision/recepción no bloquada, ya que estas operaciones pueden volver antes de que el pedido de sistema de buffer space sea obtenido. Puede ser utilizado en las rutinas de <code class="language-plaintext highlighter-rouge">WAIT</code> para determinar si la operación fue completada. En fortran es un entero.</li>
+</ul>
+
+<p>Ejemplos:</p>
+
+<p>|——————————————————————————————–|
+| <em>emisión bloqueada</em>      | <code class="language-plaintext highlighter-rouge">MPI_SEND ( *buffer, count, type, dest, tag, comm* )          </code> |
+| <em>emisión no bloquada</em>    | <code class="language-plaintext highlighter-rouge">MPI ISEND( *buffer, count, type, dest, tag. comm, request* )  </code>|
+| <em>recepción bloqueada</em>    | <code class="language-plaintext highlighter-rouge">MPI_RECV ( *buffer, count, type, source, tag, comm, status* )</code> |
+| <em>recepción no bloqueada</em> | <code class="language-plaintext highlighter-rouge">MPI_IRECV( *buffer, count, type, source, tag, comm, request* )</code>|
+|——————————————————————————————–|</p>
+
+<h3 id="rutinas-de-paso-de-mensajes">Rutinas de paso de mensajes</h3>
+
+<p>** Bloqueadas **</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">MPI_SEND(*buf, count, type, dest, tag, comm, ierr *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_RECV(*buf, count, type, source, tag, comm, status, ierr*)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_SSEND(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_SENDRECV(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_WAIT(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_WAITANY(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_WAITALL(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_WAITSOME(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_PROBE(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_GET_COUNT(* *)</code></li>
+</ul>
+
+<p>** No-Bloqueadas **</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">MPI_ISEND(*buf, count, type, dest, tag, comm, request, ierr *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_IRECV(*buf, count, type, source, tag, comm, request, ierr*)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_ISSEND(*buf, count, type, dest, tag, comm, request, ierr*)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_TEST(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_TESTANY(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_TESTALL(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_TESTSOME(* *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_IPROBE(* *)</code></li>
+</ul>
+
+<hr />
+
+<h2 id="comunicación-colectiva">Comunicación colectiva</h2>
+
+<p>La comunicación colectiva involucra a todos los procesos en el alcance del comunicador.</p>
+<ul>
+  <li>Todos los procesos por default son miembors del comunicador <code class="language-plaintext highlighter-rouge">MPI_COMM_WORLD</code>.</li>
+  <li>Se pueden definir comunicadores adicioneles.</li>
+  <li>Comportamientos inesperados, incluyendo falla del programa, pueden ocyrrur su un task en el comunicador no participa.</li>
+  <li>Es responsabilidad del usuario asegurarse de que todos los procesos en un comunicador participen de cualquier operación colectiva.</li>
+</ul>
+
+<p>Tipos de Operaciones colectivas:</p>
+<ul>
+  <li><strong>Sincronización.</strong> esperar a que todos los miembros del grupo hallan alcanzado el punto de sincronización.</li>
+  <li><strong>Movimiento de datos.</strong> distribuir (brodcas)t, distribuir en partes (scatter), reunir (gather), todo a todos (all to all).</li>
+  <li><strong>Computación colectiva.</strong> (reducciones) Un miembro del grupo colecta datos del restro y realizauna operación (min, max, suma, multiplicar, etc.) con todos los datos.</li>
+</ul>
+
+<h3 id="rutinas-de-comunicación-colectiva">Rutinas de comunicación colectiva:</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">MPI_BARRIER (*comm*)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_BCAST (*buffer, count, type, root, comm, ierr *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_SCATTER (*sendbuff, sendcount, sendtype, recvbuff, recvcount, recvtype, root, comm, ierr *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_GATHER (*sendbuff, sendcount, sendtype, recvbuff, recvcount, recvtype, root, comm, ierr *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_ALLGATHER (*sendbuff, sendcount, sendtype, recvbuff, recvcount, recvtype,  comm, info *)</code></li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">MPI_REDUCE (* sendbuff, recvbuff, count, datatype, op, root, comm, ierr*)</code>, donde op puede ser: <code class="language-plaintext highlighter-rouge">MPI_MAX</code>,<code class="language-plaintext highlighter-rouge">MPI_MIN</code>, <code class="language-plaintext highlighter-rouge">MPI_SUM</code>, <code class="language-plaintext highlighter-rouge">MPI_PROD</code>, entre otras (uno puede definir su propia función de reducción utilizando ` MPI_OP_CREATE()`).</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_ALLREDUCE (*sendbuf, recvbuf, ciybtm datatype, op, comm, ierr*)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_REDUCE_SCATTER (*sendbuf, recvbuf, recvcount, type, op, comm, ierr *)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_ALLTOALL (* sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, comm, ierr*)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">MPI_SCAN (*sendbuf, recvbuf, count, type, op, comm, ierr *)</code></li>
+</ul>
+
+<h2 id="grupos-y-comunicadores">Grupos y Comunicadores</h2>
+
+<p>Un <strong>grupo</strong> es un conjunto de procesos ordenados. Cada proceso en un grupo está asociado con un único rango entero. Los valores de rangos comienzan en 0.  Los grupos son representados como un objeto en un sistema de memoria.  Son solo accesibles por el usuario a ‘mano’. Todo objeto está asociado a un objeto comunicador.</p>
+
+<p>Un <strong>comunicador</strong> engloba a un grupo de procesos que pueden comunicarse entre ellos. Todos los ensajes MPI deben especificar al comunicador. En el sentido más simple el comunicado es un <em>tag</em> extra que debe incluirse en las llamadas de MPI. Como en los grupos, los comunicadores está  representados como un objeto en un sistema de memoria y son solo accesibles manualmente.</p>
+
+<p>Desde el punto de vista del usuario, un grupo y un comunicador son uno. Las rutinas de grupo son principalmente para especificar que procesos deben ser usados para contruir un comunicador.</p>
+
+<p>Principales propositos de grupos y comunicadores:</p>
+<ol>
+  <li>Permitir reconocer tasks, basado en funciones, en grupos de taks.</li>
+  <li>Habilitar operaciones de comunicaciones colectivas a lo largo de un subconjunto de tasks relacionados.</li>
+  <li>Provéer bases para immplementar topologías virtuales definidas por el usuario.</li>
+  <li>Provéer de comunicaciones seguras.</li>
+</ol>
+
+<p>Algunas consideraciones:</p>
+<ul>
+  <li>Los grupos y los comunicadores son dinámicos (pueden ser creados y destruidos durante la ejecución del programa)</li>
+  <li>Los procesos pueden ser en más de un grupo/comunicador.</li>
+  <li>MPI tiene cerca de 40 rutinas para relacionar grupos, comunicadores y topologías virtuales.</li>
+  <li>Uso típico:
+    <ol>
+      <li>Extraer <em>handle</em> de gruop global de <code class="language-plaintext highlighter-rouge">MPI_COMM_WORLD()</code></li>
+      <li>Formar un nuevo grupo como un subconjunto del grupo global usando <code class="language-plaintext highlighter-rouge">MPI_GROUP_INCL()</code></li>
+      <li>Crear nuevo comunicador de un grupo usando <code class="language-plaintext highlighter-rouge">MPI_COMM_CREATE()</code></li>
+      <li>Deternubar ek rango del nuevo comunicador usando <code class="language-plaintext highlighter-rouge">MPI_COMM_RANK()</code></li>
+      <li>Realizar comunicaciones usando alguna rutina de mensajes de MPI</li>
+      <li>Al terminar, liberar el comunicador/grupo usando <code class="language-plaintext highlighter-rouge">MPI_COMM_FREE()</code> ó <code class="language-plaintext highlighter-rouge">MPI_GROUP_FREE()</code>.</li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="topologías-virtuales">Topologías virtuales</h3>
+
+<ul>
+  <li>Una topología virtual describe un mapeo/ordenamiento de los procesos de MPI en una forma geométrica.</li>
+  <li>Dos topologías principales en MPI son la <em>cartesiana</em> (grid) y <em>grafo</em>.</li>
+  <li>Las topologías de MPI son virtuales, es decir, no hay una relación entre la estructura física de la maquina paralela y el proceso topológico.</li>
+  <li>Las topologías se construyen en base a comunicadores y grupos de MPI.</li>
+  <li>Deben ser programados por el usuario.</li>
+</ul>
+
+<p>Por qué usarlas:</p>
+<ul>
+  <li><em>Conveniencia</em>. Pueden estar vincualdas a tipo de datos que maneja el problema a resolver.</li>
+  <li><em>Eficiencia en la comunicación</em>.</li>
+</ul>

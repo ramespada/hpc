@@ -3,7 +3,7 @@ title: HPC
 description: Computación de alto desempeño.
 nav_order: 6
 layout: lecture
-date: 2023-01-21
+date: 2023-03-01
 ready: true
 video:
   aspect: 56.25
@@ -24,7 +24,7 @@ Para resolver un problema en forma paralela, este debe ser capaz de ser descompu
 
 Ejemplo de problema paralelo: los partidos de la copa del mundo.
 
-![](hpc/imgs/qatar2022.png)
+![](imgs/qatar2022.png)
 
 En cada etapa (octavos, cuartos, semi y final) los partidos pueden ser ejecutados en forma paralela, mientras que la ejecución de etapas debe ser en forma serial. Es decir este problema es serial en el sentido horizontal, y paralelo en el sentido vertical.
 
@@ -40,7 +40,7 @@ Por lo tanto, la única forma de mejorar la performance es desarrollar sistemas 
 
 La **concurrencia** es cuando tenemos multiples tareas (*tasks*) logicamente activas al mismo tiempo. Pero puede que no se ejecuten al mismo tiempo. En cambio el **paralelismo** es un tipo de concurrencia en el cual las distintas tareas estan efectivamente activas al mismo tiempo.
 
-![](hpc/imgs/parallel_vs_concurrent.png)
+![](imgs/parallel_vs_concurrent.png)
 
 
 ## Arquitectura de Von Neuman
@@ -175,7 +175,7 @@ Existen varios modelos de programación paralela en uso:
 
 
 A continuación se muestra una estructura típica de cluster y las herramientas que nos permiten interactuar con las distintas partes del mismo
-![](hpc/imgs/cluster_network.png)
+![](imgs/cluster_network.png)
 
 
 
