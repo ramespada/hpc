@@ -1,6 +1,6 @@
 ---
 layout: lecture
-date: 2023-02-03
+date: 2023-02-04
 title: CUDA
 description: GPU con CUDA
 ready: true
