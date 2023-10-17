@@ -1,50 +1,33 @@
 ---
 layout: lecture
 date: 2023-02-02
-ready: true
-video:
-  aspect: 56.25
-  id: e8BO_dYxk5c
 title: OpenMP
 description: Open Multi-Processing
+ready: true
 ---
 
 # OpenMP
 
 > **OpenMP** (*Open Multi-Processing*) es una un conjunto de comandos y rutinas, portables y escalables, que permite la paralelización de tareas dentro de un programa. Trabaja con paralelización **multi-threaded** y **shared memory** (de memoria compartida). Sus objetivo es ser *estandarizado* , *portable* , *discreto*, *eficiente* y *fácil* de usar. Tiene soporte para Fortran y C/C++.
 
-Sus componentes principales son:
-1. **Instrucciones para el compilador**
- + Aparecen como comentarios en el código y son ignorados por el compilador en caso de no estar usando *openMP*.
- + Se utilizan para:
-  - Delimitar las partes del código a ser paralelizadas.
-  - Crear bloques entre threads
-  - Distribuir iteraciones de loops entre threads.
-  - Serializar partes del código. Sincronizar los threads.
-2. **Librerías con rutinas en tiempo real/de corrida**
- + Aparecen como funciones ó subrutinas.
- + Se utilizan para:
-  - setear y consultar numero de threads.
-  - Consultar información de threads particulares.
-  - Setear paralelismo anidado.
-  - Setear, inicializar y terminar *locks*
-3. **Variables de ambiente**
- + Se pueden setear en el código ó fuera de él.
- + Se utilizan para:
-  - Setear numero de threads.
-  - Especificar como serán divididas las iteraciones de un loop entre threads.
-  - *Atar* threads a procesadores.
-  - Habilitar/deshabilitar paralelismo anidado.
-  - Habiitar/deshabilitar threads dinámicos.
-  - Setear tamaño de *thread stack*.
-  - Setear la política de espera de threads.
-   
-### Definiciones:
-+ **Modelo de memoria compartida**: multiples procesadores tienen acceso al mismo espacio de memoria.
-+ **Proceso**: Unidad de ejecución independiente. Tiene su propio estado y su *address-space*
-+ **Thread**: Cada proceso puede tener varios *threads*. Todos los threads de un proceso comparten *estado* y *address-space*
-+ Modelo **Fork-Join** 
+El hecho de que openMP use un modelo de memoria compartida trae un problema inherente conocido como *race-conditions*. Esto es cuando distintos procesos acceden a una misma porción de memoria y la leen o escriben haciendo que el resultado del cálculo cambie arbtitrariamente dependiendo de cual proceso accedio primero. La forma de evitar estos conflictos es atraves de la *sincronización* de threads. La sincronización puede afectar significativamente la performance del programa por lo que hay que intentar minimizarla.
 
+
+### Modelo de programación *Fork-Join* 
+
+OpenMP sigue un modelo conocido como *fork-join* donde se distinguen regiones *seriales* (con un único thread) y regiones *paralelas* (multiple threads)
+
+![](imgs/fork-join-model.png)
+
+### Regiones paralelas:
+
+Para indicar que comienza una porción del código a ser corrido en paralelo se indica: 
+```fortran
+!$omp parallel
+  !(Acá va la region paralela)
+!$omp end parallel
+```
+Lo que queda encerrado entre ese bloque se paraleliza. En esta región del código se asigna un **thread master** y varios **slave threads**. 
 
 #### Ejemplo simple: Hola mundo
 
@@ -87,17 +70,24 @@ export OMP_NUM_THREADS=4
 ./a.out
 ```
 
-### Regiones paralelas:
 
-Para indicar que comienza una porción del código a ser corrido en paralelo se indica: 
-```fortran
-!$omp parallel
-  !(Acá va la region paralela)
-!$omp end parallel
-```
-Lo que queda encerrado entre ese bloque se paraleliza. En esta región del código se asigna un **thread master** y varios **slave threads**. 
 
-#### Interacción entre threads**
+### Sincronización
+
+La sincronización se usa para imponer orden entre procesos y proteger el acceso a la memoria compartida.
+
+OpenMP tiene los siguientes comandos de alto nivel para la sincronización:
+ + `critical`: (exclusión mutua) los threads esperan su turno para ejecutar el codigo (uno a la vez).
+ + `atomic`: 
+ + `barrier`
+ + `orderer`
+
+También hay otros comandos de bajo nivel:
+ + `flush`
+ + `locks`
+
+
+#### Interacción entre threads
 
 + Entre threads se comunican utilizando variables compartidas (*shared variables*). 
 + Los threads comunmente necesitan algun espacio de trabajo privado junto con variables compartidas (por ejemplo el indice de un loop).
@@ -123,10 +113,10 @@ Se puede definir por default que usar: `default(private/shared/none)`
 Las regiones paralelas crean un programa simple de datos multiples donde cada thread ejecuta el mismo codigo.
 
 Para dividir el trabajo entre threads en una region paralela pueden utilizarse:
-  1. *Loops*
-  2. *Secciones*
-  3. *Taks*
-  4. *Workshare*
+ 1. *Loops*
+ 2. *Secciones*
+ 3. *Taks*
+ 4. *Workshare*
 
 ### Loop
 Para hacer que se comparta el trabajo de un loop.
@@ -173,6 +163,10 @@ do i=1, n
 end do
 !$OMP END PARALLEL DO 
 ``         
+
+> (!) Dado que la suma y el producto con punto flotante no es asociativa, es posible que se obtenga distintos valores cada vez que se ejecuta el programa.
+
+
 
 #### Buenas prácticas:
   + Maximizar/Optimizar regiones paralelas, es decir, reducir numero de llamadas a regiones paralelas (*fork-join overhead*)
@@ -295,20 +289,18 @@ Aveces parte de la region paralela debe ser ejecutada sólo por el *master threa
  + **`critical`** (mutual exclusión). Crea una sección crítica: zona que debe ser ejecutada por cada thread a la vez.
  + **`atomic`** Actualiza un valor determinado.
  + **`orderer`** Sincroniza todos los threads en ese punto.
- + **`master`** Zona que sdebe ser ejecutada sólo por el *master*
- + **`single`** Zona que debe ser ejecutada por sólo un thrad (arbitrario)
+ + **`single`** Zona que debe ser ejecutada por sólo un thread (arbitrario)
+ + **`master`** Zona que sdebe ser ejecutada sólo por el *master* (threadId==0)
  + **`flush`** Sincroniza la memoria de todos los threats.
  + **`nowait`**
 
 ### Variables de entorno
 
-*OpenMP* provée de varias formas para interactuar con el entorno de ejecución, estas operaciones incluyen :
+*OpenMP* provée de varias formas para interactuar con el entorno de ejecución, estas operaciones incluyen:
   + seteo de numero de threads por region paralela.
   + pedido de numero de cpus.
   + cambiar el schedule default de trabajo.
-
 Hay una serie de variables de entorno que hay que setear:
-
   + `OMP_SCHEDULE`
   + `OMP_NUM_THREADS`
   + `OMP_DYNAMIC`
@@ -319,9 +311,15 @@ Hay una serie de variables de entorno que hay que setear:
   + `OMP_MAX_ACTIVE_LEVELS`
   + `OMP_THREAD_LIMIT`
 
-`omp_lib`
-`omp_get_num_threads()`
-`omp_get_thread_num()`
+Operanciones en *run-time*:
++ Modificar ó ver numero de threads: 
+  - `omp_set_num_threads()`
+  - `omp_get_num_threads()`
+  - `omp_get_thread_num()`
+  - `omp_get_max_threads()`
++ Consultar si se está en una region paralela: `omp_in_parallel()`
++ Cambiar numero de threads dinamicamente: `omp_set_dynamic()`, `omp_get_dynamic()`
++ Cuantos procesadores hay en el sistema: `omp_get_num_procs()`
 
 
 ## Control de ejecución: *LOCKS* y paralelismo anidado
@@ -343,11 +341,11 @@ Los *locks* proveen funcionalidades análogas a semáforos
 Sintaxis: su  `subroutine OMP_(init/set/destroy)_LOCK(svar)`  `subroutine OMP_(init/set/destroy)_nest_LOCK(svar)` 
 
 Workflow:
-  1. Definir una variable *lock*
-  2. Inicializar con `omp_init_lock`
-  3. setear con `omp_set_lock` ó `omp_test_lock`
-  4. Liberar con `omp_unset_lock`
-  5. Destruir con `omp_destroy_lock`
+ 1. Definir una variable *lock*
+ 2. Inicializar con `omp_init_lock`
+ 3. setear con `omp_set_lock` ó `omp_test_lock`
+ 4. Liberar con `omp_unset_lock`
+ 5. Destruir con `omp_destroy_lock`
 
 Ejemplo:
 
@@ -388,9 +386,34 @@ Para configurar afinidad en GNU se utiliza: `GOMP_CPU_AFFINITY ="0-6"`
 Los caches de las nuevas CPUs son complejos. Los datos son leidos/escritos como lineas de cache enteras (generalmente 64bits)
 Los modelos de programación requiren que la información en la memoria sea consistente (un address solo puede tener un valor).
 
-Cuando diferentes threads modificas ubicación en memoria sucesivamente, la coeherencia del cache forza estas actualizaciones a ser transferidas entre todas las copias de cache. Si esto ocurre en una rapida sucesión hay una penalidad muy grande en la performance debido a perdidas de caches.
+Cuando diferentes threads modifican ubicación en memoria sucesivamente, la coeherencia del cache forza estas actualizaciones a ser transferidas entre todas las copias de cache. Si esto ocurre en una rapida sucesión hay una penalidad muy grande en la performance debido a perdidas de caches.
 Para evitarlo, reorganizar el acceso a los datos de forma tal que cada thread modifique valores dentro de un bloque más grande, ó usar variables privadas. (Esto no ocurre cuando los datos son solo leídos).
 
 
-SPMD:
-Worksharing:
+<!--
+Sus componentes principales son:
+1. **Instrucciones para el compilador**
+ + Aparecen como comentarios en el código y son ignorados por el compilador en caso de no estar usando *openMP*.
+ + Se utilizan para:
+  - Delimitar las partes del código a ser paralelizadas.
+  - Crear bloques entre threads
+  - Distribuir iteraciones de loops entre threads.
+  - Serializar partes del código. Sincronizar los threads.
+2. **Librerías con rutinas en tiempo real/de corrida**
+ + Aparecen como funciones ó subrutinas.
+ + Se utilizan para:
+  - setear y consultar numero de threads.
+  - Consultar información de threads particulares.
+  - Setear paralelismo anidado.
+  - Setear, inicializar y terminar *locks*
+3. **Variables de ambiente**
+ + Se pueden setear en el código ó fuera de él.
+ + Se utilizan para:
+  - Setear numero de threads.
+  - Especificar como serán divididas las iteraciones de un loop entre threads.
+  - *Atar* threads a procesadores.
+  - Habilitar/deshabilitar paralelismo anidado.
+  - Habiitar/deshabilitar threads dinámicos.
+  - Setear tamaño de *thread stack*.
+  - Setear la política de espera de threads.
+ -->

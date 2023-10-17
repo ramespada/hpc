@@ -10,5 +10,5 @@ program hola
 end program
 
 !!Para correrlo:
-!! >> gfortran -fopenmp testMP.f
+!! >> gfortran -fopenmp hello_omp.f90
 !! >> mpirun -np 4 a.out

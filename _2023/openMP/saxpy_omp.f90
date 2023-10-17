@@ -3,25 +3,25 @@ program SAXPY
   use omp_lib
 
   implicit none
-  integer, parameter :: N=2**10
-  real :: x(N), y(N)
-  real :: a,start,finish
-  integer :: i,np
+  integer, parameter :: N=2**18
+  real(8):: x(N), y(N)
+  real(8):: a,start,finish
+  integer :: i, nthreads
   !init
   CALL RANDOM_NUMBER(x)
   y=1.0
   a=2.0
 
   START = omp_get_wtime()
-  !$OMP PARALLEL
-  !$OMP DO
-  do i=1,size(x)
+  !$omp parallel private(i) shared(a,x,y)
+  nthreads=omp_get_num_threads()
+  !$omp do
+  do i=1,N
     y(i) = a * x(i) + y(i)
   enddo
-  !$OMP END DO
-  np=omp_get_num_threads()
-  !$OMP END PARALLEL
+  !$omp end do
+  !$omp end parallel
   FINISH = omp_get_wtime()
-  print '("Time Avg = ",f12.8," seconds. w/",i0,"threads")',finish-start,np 
+  print '("Time Avg = ",f15.10," secs. (w/",i0," threads)")',finish-start,nthreads
 
 endprogram

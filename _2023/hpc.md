@@ -3,11 +3,7 @@ layout: lecture
 date: 2023-02-01
 title: HPC
 description: Computación de alto desempeño.
-nav_order: 6
 ready: true
-video:
-  aspect: 56.25
-  id: e8BO_dYxk5c
 ---
 
 # Programación paralela
@@ -21,6 +17,8 @@ video:
   + **Computación paralela**: Es el uso *simultanteo* de recursos computacionales para resolver un problema. El problema se descompone en partes discretas que pueden ser resueltas concurrentemente. Cada parte es descompuesta en una serie de instrucciones, y cada una de ellas puede ser ejecutada en diferentes procesadores al mismo tiempo. Para ello se require un controlador global que coordine y una todos los procesos que se llevan a cabo de forma separada.
 
 Para resolver un problema en forma paralela, este debe ser capaz de ser descompuesto en partes que se resuelvan simultaneamente. Los recursos computacionales usados pueden ser computadoras con multiples procesadores (*cores/núcleos*) ó varias computadoras en red.
+
+
 
 Ejemplo de problema paralelo: los partidos de la copa del mundo.
 
@@ -65,6 +63,12 @@ Flynn clasificó las computadoras en base a dos características: el *paralelism
 + **MISD** *(Multiple Instruction, Single Data)*  Cada unidad de procesamiento actua de forma independiente por distintas vías de instrucciones. Pero hay un solo canal de datos que alimenta a las unidades de procesamiento. (Esta arquitectura no es muy común).
 + **MIMD** *(Multiple Instruction, Multiple Data)*
 Cada procesador puede trabajar en una vía de instrucciones distinta, y el acceso a los datos puede ser diferente para cada uno. Es el tipo más común de computadoras paralelas.
+
+
+|                   | Single data | Mult. data    |
+|:------------------|:-----------:|:-------------:|
+|Single Instruction | SISD        | MISD          |
+|Many   Instructions| SIMD        | MIMD          |
 
 
 ## Definiciones y conceptos:
@@ -223,12 +227,9 @@ Algunos factores a considerar:
 ### Sincronización
 
 Tipos de sincronización:
-  + *Barrier* /Barrera: Todos los tasks están involucrados. Cuando el último task llega a la barrera entonces se sincronizan los taks.
-
-  + *Lock*/Semáforo: Puede involucrar cualquier numero de taks. Se usan para serializar/proteger acceso a datos globales. Sólo un task a la vez puede usar el lock.
-
-  + Sincrónica
-
+ + *Barrier* /Barrera: Todos los tasks están involucrados. Cuando el último task llega a la barrera entonces se sincronizan los taks.
+ + *Lock*/Semáforo: Puede involucrar cualquier numero de taks. Se usan para serializar/proteger acceso a datos globales. Sólo un task a la vez puede usar el lock.
+ + Sincrónica
 
 ### Dependencia
 Hay *dependencia entre instrucciones* cuando el orden de ejecución de estos afecta el resultado del programa. También existe la *dependencia de datos* resulta del uso múltiple de la misma locación de datos por distintos tasks.
@@ -240,8 +241,8 @@ El balance de carga (*load balancing*) se refiera a la forma en que se distribuy
 
 las estrategias posibles son:
   + *Distribución equitativa*
-
   + *Asignación dinámica*
+
 ### Granularidad
 Como ya se dijo, la granularidad hace referencia a la relación entre computación y comunicación.
   + Granularidad fina
