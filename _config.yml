@@ -1,6 +1,6 @@
 # Setup
 title: 'HPC'
-url: ramespada.github.io/hpc
+url: https://ramespada.github.io
 
 # Settings
 markdown: kramdown
@@ -8,7 +8,7 @@ kramdown:
   input: GFM
   hard_wrap: false
 highlighter: rouge
-#permalink: /:title/
+permalink: /:title/
 future: true
 # safe: true # breaks local rendering if enabled
 timezone: America/Argentina/Buenos_Aires

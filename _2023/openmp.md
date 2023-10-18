@@ -2,11 +2,9 @@
 layout: lecture
 date: 2023-02-02
 title: OpenMP
-description: Open Multi-Processing
+description: Open Multi-Processing.
 ready: true
 ---
-
-# OpenMP
 
 > **OpenMP** (*Open Multi-Processing*) es una un conjunto de comandos y rutinas, portables y escalables, que permite la paralelización de tareas dentro de un programa. Trabaja con paralelización **multi-threaded** y **shared memory** (de memoria compartida). Sus objetivo es ser *estandarizado* , *portable* , *discreto*, *eficiente* y *fácil* de usar. Tiene soporte para Fortran y C/C++.
 

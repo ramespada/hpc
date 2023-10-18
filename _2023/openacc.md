@@ -3,10 +3,7 @@ layout: lecture
 date: 2023-02-05
 title: openACC
 description: Open Accelerator
-ready: true
-video:
-  aspect: 56.25
-  id: e8BO_dYxk5c
+ready: false
 ---
 
 

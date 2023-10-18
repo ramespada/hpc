@@ -24,32 +24,22 @@ Acá podés encontrár [más información sobre este curso](/info/).
 {% assign clases = site['2023'] | sort: 'date' %}
 {% for clase in clases %}
     {% if clase.phony != true %}
+        {% if clase.ready %}
         <li>
         <strong>{{ clase.date | date: '%d %b' }}</strong>:
-        {% if clase.ready %}
             <a href="{{ clase.url }}">{{ clase.title }}</a>
-        {% else %}
-            {{ clase.title }} {% if clase.noclass %}[no class]{% endif %}
-        {% endif %}
         </li>
+        {% else %}
+        {% comment %}
+		 <li>  {{ clase.title }} {% if clase.noclass %}[no class]{% endif %}</li> 
+        {%endcomment%}
+        {% endif %}
     {% endif %}
 {% endfor %}
 </ul>
 
 Los videos tutoriales están disponible [en Youtube](https://www.youtube.com/@ramiroespadaguerrero/playlists).
 
-{% comment %}
-# Sobre el curso
-**Staff**: This class is co-taught by [Anish](https://www.anishathalye.com/), [Jon](https://thesquareplanet.com/), and [Jose](http://josejg.com/).<br>
-**Questions**: Email us at [missing-semester@mit.edu](mailto:missing-semester@mit.edu).
-
-## Agradecimientos
-We thank Elaine Mello, Jim Cain, and [MIT Open
-Learning](https://openlearning.mit.edu/) for making it possible for us to
-record lecture videos; Anthony Zolnik and [MIT
-AeroAstro](https://aeroastro.mit.edu/) for A/V equipment; and Brandi Adams and
-[MIT EECS](https://www.eecs.mit.edu/) for supporting this class.
-{% endcomment %}
 
 ---
 

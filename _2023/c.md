@@ -2,14 +2,10 @@
 layout: lecture
 date: 2023-01-02
 title: C
-description: Sintaxis básica de C.
+description: Lenguaje de programación C.
 ready: true
-video:
-  aspect: 56.25
-  id: e8BO_dYxk5c
 ---
 
-# C
 > C es un lenguaje de programación de propósito general originalmente desarrollado por Dennis Ritchie entre 1969 y 1972 en los Laboratorios Bell, como evolución del anterior lenguaje B, a su vez basado en BCPL. Al igual que B, es un lenguaje orientado a la implementación de sistemas operativos, concretamente Unix.
 
 ## Hola mundo!

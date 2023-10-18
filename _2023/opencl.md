@@ -3,10 +3,7 @@ layout: lecture
 date: 2023-02-06
 title: openCL
 description: Open Computing Language
-ready: true
-video:
-  aspect: 56.25
-  id: e8BO_dYxk5c
+ready: false
 ---
 
 

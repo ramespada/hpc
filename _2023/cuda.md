@@ -2,14 +2,9 @@
 layout: lecture
 date: 2023-02-04
 title: CUDA
-description: GPU con CUDA
+description: GPU con CUDA.
 ready: true
-video:
-  aspect: 56.25
-  id: e8BO_dYxk5c
 ---
-
-# CUDA
 
 > CUDA es un modelo escalable para programación paralela que habilita el uso de GPU para la programación de proposito general.
 Cuda es una plateaforma y un modelo de programación para GPUs. La plateaforma permite utilizar GPUs para computación de proposito general. Cuda provee extensiones para  C/C++ y Fortran.

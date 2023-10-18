@@ -1,14 +1,10 @@
 ---
 layout: lecture
 date: 2023-02-03
-ready: true
-video:
-  aspect: 56.25
-  id: e8BO_dYxk5c
 title: MPI
-description: Message Passing Interface
+description: Message Passing Interface.
+ready: true
 ---
-# Message Passing Interface (MPI)
 
 > MPI es una especificación para desarrolladores y usuarios de librerias de pasaje de mensajes. Su objetivo es ser una interfaz práctica, portable, eficiente y flexible. Una gran ventaja de MPI es que está **adaptada para cualquier arquitectura de memoria** (distribuida, compartida e híbrida). Implementaciones de MPI: MPICH, OpenMPI, Intel MPI. Tiene soporte para C, C++ y Fortran. 
 

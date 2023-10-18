@@ -6,8 +6,6 @@ description: Computación de alto desempeño.
 ready: true
 ---
 
-# Programación paralela
-
 > La computación de alto rendimiento implica usar la potencia de cálculo para resolver problemas complejos en ciencia, intengiería y gestión. <200b> Para lograr este objetivo, la computación de alto rendimiento se apoya en tecnologías computacionales como los clusters, los supercomputadores o la computación paralela.
 
 ## ¿ Qué es ?
