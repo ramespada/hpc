@@ -5,7 +5,27 @@
     <label class="menu-label" for="menu-icon"></label>
     <div class="trigger">
       <div class="trigger-child">
-        <span class="nav-link"><a href="/2023/">clases</a></span>
+        <span class="nav-link"><a href="/clases/">clases</a>
+         {% comment %} 
+         <ul style="display:block;position:relative;width:50px;">
+            {% assign lectures = site['clases'] | sort: 'date' %}
+            {% for lecture in lectures %}
+              {% if lecture.phony != true %}
+                <li style="width:100%;">
+                  {% if lecture.ready %}
+                    <a href="{{ lecture.url }}">{{ lecture.title }}</a>
+                  {% else %}
+                  {% endif %}
+                  {% if lecture.details %}
+                    <br>
+                    ({{ lecture.details }})
+                  {% endif %}
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+         {%endcomment%} 
+        </span>
         <span class="nav-link"><a href="/tps/">tps</a></span>
       </div>
     </div>

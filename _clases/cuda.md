@@ -1,6 +1,6 @@
 ---
 layout: lecture
-date: 2023-02-04
+date: 2023-03-04
 title: CUDA
 description: GPU con CUDA.
 ready: true
@@ -15,9 +15,7 @@ Generalmente corremos serialmente en la CPU y descargamos el calculo paralelo a 
 
 En el siguiente bloque de código se puede diferenciar un programa en C de uno de CUDA.
 <div markdown="1" style="float:left;right-margin:30px;">
-
 **C**
-
 ```c
 void c_hello(){
     printf("Hello World!\n");
@@ -31,7 +29,6 @@ int main() {
 
 </div>
 <div markdown="1">
-
 **CUDA**
 
 ```c

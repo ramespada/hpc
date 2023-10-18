@@ -1,13 +1,13 @@
 ---
 layout: page
-title: "Clases 2023"
-permalink: /2023/
+title: "Clases"
+permalink: /clases/
 phony: true
 excerpt: '' # work around a bug
 ---
 
 <ul>
-  {% assign lectures = site['2023'] | sort: 'date' %}
+  {% assign lectures = site['clases'] | sort: 'date' %}
   {% for lecture in lectures %}
     {% if lecture.phony != true %}
       <li>
@@ -28,7 +28,7 @@ excerpt: '' # work around a bug
   {% endfor %}
 </ul>
 
-Los videos tutoriales están disponible <a href="https://www.youtube.com/@ramiroespadaguerrero/playlists">en Youtube</a>
+Los video tutoriales estarán disponible <a href="https://www.youtube.com/@ramiroespadaguerrero/playlists">en Youtube</a>
 
 {% comment %}
 <h2>Previous year's lectures</h2>

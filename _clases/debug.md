@@ -1,6 +1,6 @@
 ---
 layout: lecture
-date: 2023-01-06
+date: 2023-02-03
 title: Debug & Profiling
 description: Herramientas para debbug y profile
 ready: true

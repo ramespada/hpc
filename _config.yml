@@ -8,7 +8,7 @@ kramdown:
   input: GFM
   hard_wrap: false
 highlighter: rouge
-permalink: /:title/
+#permalink: /:title/
 future: true
 # safe: true # breaks local rendering if enabled
 timezone: America/Argentina/Buenos_Aires
@@ -16,7 +16,9 @@ timezone: America/Argentina/Buenos_Aires
 #  tracking_id: G-P7WVHD84D1
 
 collections:
-  '2023':
+  'clases':
+    output: true
+  'tps':
     output: true
 
 # Excludes

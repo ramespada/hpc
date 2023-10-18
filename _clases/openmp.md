@@ -1,6 +1,6 @@
 ---
 layout: lecture
-date: 2023-02-02
+date: 2023-03-02
 title: OpenMP
 description: Open Multi-Processing.
 ready: true

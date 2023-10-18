@@ -1,6 +1,6 @@
 ---
 layout: lecture
-date: 2023-02-06
+date: 2023-03-06
 title: openCL
 description: Open Computing Language
 ready: false
