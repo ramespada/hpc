@@ -7,47 +7,69 @@ En esta sección se presentan algunos problemas prácticos para implementar y
 analizar su performance, escalabilidad y entender algunos fenómenos de la computación
 paralela.
 
-## Command shell
+## Hola mundo
 
-How to automate common and repetitive tasks with aliases, scripts,
-and build systems. No more copy-pasting commands from a text
-document. No more "run these 15 commands one after the other". No
-more "you forgot to run this thing" or "you forgot to pass this
-argument".
+El primer paso con cualquier nueva herramienta es asegurarnos que funciona en nuestra computadora.
+Para esto siempre es muy útil escribir un programa *"hola mundo!"* que encapsule lo más básico de la 
+nueva herramienta a usar.
 
-For example, searching through your history quickly can be a huge time saver. In the example below we show several tricks related to navigating your shell history for `convert` commands.
+[c](hola/hola.c)         |
+[fortran](hola/hola.f90) |
+[omp](hola/hola_omp.f90) |
+[mpi](hola/hola_mpi.f90) |
+[cuda](hola/hola_cuda.c)
 
-<video autoplay="autoplay" loop="loop" controls muted playsinline  oncontextmenu="return false;"  preload="auto"  class="demo">
-  <source src="/static/media/demos/history.mp4" type="video/mp4">
-</video>
 
-## Version control
 
-How to use version control _properly_, and take advantage of it to
-save you from disaster, collaborate with others, and quickly find and
-isolate problematic changes. No more `rm -rf; git clone`. No more
-merge conflicts (well, fewer of them at least). No more huge blocks
-of commented-out code. No more fretting over how to find what broke
-your code. No more "oh no, did we delete the working code?!". We'll
-even teach you how to contribute to other people's projects with pull
-requests!
+## Integral PI
 
-In the example below we use `git bisect` to find which commit broke a unit test and then we fix it with `git revert`.
-<video autoplay="autoplay" loop="loop" controls muted playsinline  oncontextmenu="return false;"  preload="auto"  class="demo">
-  <source src="/static/media/demos/git.mp4" type="video/mp4">
-</video>
+Un buen primer ejemplo para practicar como paralelizar código es
+la integración numérica. En este caso se eligió la integral de la función
+<center>
+f(x)=4/(1+x^2)
+</center>
+la razón de elección de esta función es que su integral entre 0 y 1 es numéricamente
+igual a &pi; y por lo tanto es fácil de corroborar su correcta implementación.
 
-## Text editing
 
-How to efficiently edit files from the command-line, both locally and
-remotely, and take advantage of advanced editor features. No more
-copying files back and forth. No more repetitive file editing.
+## SAXPY
 
-Vim macros are one of its best features, in the example below we quickly convert an html table to csv format using a nested vim macro.
-<video autoplay="autoplay" loop="loop" controls muted playsinline  oncontextmenu="return false;"  preload="auto"  class="demo">
-  <source src="/static/media/demos/vim.mp4" type="video/mp4">
-</video>
+SAXPY es el acrónimo de *Single precisión A times X plus Y* y es una operación 
+ampliamente utilizada como benchmark para comparar performance entre distintas 
+herramientas ya que es una operación que aparece a menudo en problemas de algebra
+lineal y el cálculo numérico. Y consiste tan solo en ejecutar la siguiente operación:
+<center>
+<b>Y</b> = a &times; <b>X</b> + <b>Y</b>
+</center>
 
+donde *a* es un escalar, *X* e *Y* son vectores de longitud "n".
+
+
+## Jacobi
+
+Es un método para resolver sistemas de ecuaciones lineales (SELs) que que a diferencia de
+Gauss-Seidel tiene mayor potencial para paralelizar.
+
+
+## Transformada de Fourier
+
+
+## Transporte de Calor
+
+
+## Mecánica de fluidos
+
+
+## Procesamiento de señales
+
+
+## Fibonacci
+
+
+## Machine learning
+
+
+{% comment %}
 ## Remote machines
 
 How to stay sane when working with remote machines using SSH keys and
@@ -108,3 +130,5 @@ We hope to see you in January, whether virtually or in person!
 
 Happy hacking,<br>
 Anish, Jose, and Jon
+
+{%endcomment%}
