@@ -22,7 +22,7 @@ Acá podés encontrár algunos de [problemas](/tps/) que trataremos en el curso.
       {% if clase.ready %}
         <li>
         <strong>{{ clase.date | date: 'C%-m.%-d' }}</strong>:
-            <a href="{{ clase.url }}">{{ clase.title }}</a>
+            <a href="{{site.baseurl}}{{ clase.url }}">{{ clase.title }}</a>
         </li>
         {% else %}
         {% comment %}

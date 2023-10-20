@@ -1,7 +1,7 @@
 # Setup
 title: 'HPC'
-url: https://ramespada.github.io/hpc
-
+url: https://ramespada.github.io
+baseurl: /hpc/
 # Settings
 markdown: kramdown
 kramdown:

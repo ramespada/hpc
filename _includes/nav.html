@@ -1,11 +1,11 @@
 <div id="nav-bg">
   <nav id="top-nav">
-    <a href="/" id="logo">./hpc</a>
+    <a href="{{ site.baseurl }}/" id="logo">./hpc</a>
     <input type="checkbox" id="menu-icon">
     <label class="menu-label" for="menu-icon"></label>
     <div class="trigger">
       <div class="trigger-child">
-        <span class="nav-link"><a href="/clases/">clases</a>
+        <span class="nav-link"><a href="{{ site.baseurl }}/clases">clases</a>
          {% comment %} 
          <ul style="display:block;position:relative;width:50px;">
             {% assign lectures = site['clases'] | sort: 'date' %}
@@ -13,7 +13,7 @@
               {% if lecture.phony != true %}
                 <li style="width:100%;">
                   {% if lecture.ready %}
-                    <a href="{{ lecture.url }}">{{ lecture.title }}</a>
+                    <a href="{{ site.baseurl }}{{ lecture.url }}">{{ lecture.title }}</a>
                   {% else %}
                   {% endif %}
                   {% if lecture.details %}
@@ -26,7 +26,7 @@
           </ul>
          {%endcomment%} 
         </span>
-        <span class="nav-link"><a href="/tps/">tps</a></span>
+        <span class="nav-link"><a href="{{site.baseurl}}/tps/">tps</a></span>
       </div>
     </div>
   </nav>

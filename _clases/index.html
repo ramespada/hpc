@@ -13,7 +13,7 @@ excerpt: '' # work around a bug
       <li>
         <strong>{{ lecture.date | date: '%-m/%d' }}</strong>:
         {% if lecture.ready %}
-          <a href="{{ lecture.url }}">{{ lecture.title }}</a>
+          <a href="{{ site.baseurl }}{{ lecture.url }}">{{ lecture.title }}</a>
         {% elsif lecture.noclass %}
           {{ lecture.title }} [no class]
         {% else %}
