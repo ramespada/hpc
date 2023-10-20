@@ -129,7 +129,7 @@ pre code {
 }
 
 a {
-  color: #75aadb;
+  color: #4187c8;/*#75aadb;*/
   text-decoration: underline;
 }
 
@@ -261,7 +261,7 @@ a:hover#logo {
   display: none;
 }
 
-.trigger {
+/*.trigger {
   display: none;
 }
 
@@ -269,7 +269,7 @@ input[type=checkbox]:checked ~ .trigger {
   display:block;
   margin: auto;
 }
-
+*/
 .menu-label {
   font-family: "Source Code Pro", "Menlo", "DejaVu Sans Mono", "Lucida Console", monospace;
 }
@@ -283,13 +283,13 @@ input[type=checkbox]:checked ~ .menu-label:after {
 }
 
 .nav-link {
-  display: block;
+  display: inline-block;
 }
-
+/*
 .trigger-child {
   display: inline-block;
   text-align: initial;
-}
+}*/
 
 .nav-link:before {
   content: "- ";
@@ -302,7 +302,7 @@ input[type=checkbox]:checked ~ .menu-label:after {
     display: none;
   }
 
-  .trigger {
+  /*.trigger {
     display: inline;
     padding-top: inherit;
   }
@@ -314,10 +314,10 @@ input[type=checkbox]:checked ~ .menu-label:after {
 
   input[type=checkbox]:checked ~ .trigger {
     display: inline;
-  }
+  }*/
 
   .nav-link {
-    display: initial;
+    display: inline-block, /*initial;*/
   }
 
   .nav-link:before {
@@ -378,3 +378,22 @@ input[type=checkbox]:checked ~ .menu-label:after {
     content: "("attr(href)")"; font-family: monospace; margin: 0 .25em;
   }
 }
+
+/*nav drowpdown item */
+.dropdown-content {
+  display: none;
+  position: absolute;
+margin: 0px 10px 0px 10px;
+}
+
+.dropdown-content a {
+  display: block;
+  float: none;
+  text-align: left;
+  background-color:#75aadb;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
