@@ -11,7 +11,7 @@ El curso no asume conocimientos previos de programación, por lo que en la prime
 El foco del curso está puesto en la implementación de programas (en C ó Fortran) que exploten la paralelización de distintos problemas bajo arquitecturas de cómputo de memoria compartida (`openMP`), memoria distribuida (`MPI`) y en aceleradores ó GPUs (`CUDA`, `openACC` y `openCL`). 
 El espíritu es analizar el incremento en la performance (*speedup*) en comparación a sus respectivas versiones seriales, analizar la *escalabilidad* de cada herramienta.
 
-Acá podés encontrár algunos de [problemas](/tps/) que trataremos en el curso.
+Acá podés encontrár algunas de [aplicaciones](/ejemplos/) que trataremos en el curso.
 
 # Programa del curso
 

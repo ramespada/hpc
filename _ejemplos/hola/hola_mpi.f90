@@ -1,6 +1,6 @@
 program hola
     implicit none
-    integer :: ierr, ntasks,rank,len
+    integer :: ierr,ntasks,rank,len
     character(50) :: hostname
 
     include 'mpif.h'
@@ -10,7 +10,6 @@ program hola
         call MPI_COMM_RANK(MPI_COMM_WORLD,rank  ,ierr)
         call MPI_GET_PROCESSOR_NAME(hostname, len ,ierr)
         print '("Hola mundo! (proc: ",I0," de ",I0,") en: ",20A )',rank,ntasks,hostname
-
     call MPI_FINALIZE(ierr)
 
 end program

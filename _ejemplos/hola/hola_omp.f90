@@ -9,6 +9,8 @@ program hola
 
 end program
 
-!!Para correrlo:
-!! >> gfortran -fopenmp hello_omp.f90
-!! >> mpirun -np 4 a.out
+! Compilación:
+! $ gfortran -fopenmp hola_omp.f90
+! Ejecución:
+! export OMP_NUM_THREADS=4
+! ./a.out

@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "TPs"
+title: "Ejemplos"
 ---
 
 En esta sección se presentan algunos problemas prácticos para implementar y 
@@ -20,6 +20,23 @@ nueva herramienta a usar.
 [cuda](hola/hola_cuda.c)
 
 
+## SAXPY
+
+SAXPY es el acrónimo de *Single precisión A times X plus Y* y es una operación 
+ampliamente utilizada como patrón para comparar performance entre distintas 
+herramientas ya que es una operación que aparece a menudo en problemas de algebra
+lineal y el cálculo numérico. Y consiste tan solo en ejecutar la siguiente operación:
+<center>
+<b>Y</b> = a <b>X</b> + <b>Y</b>
+</center>
+
+donde *a* es un escalar, *X* e *Y* son vectores de longitud "n".
+
+[c](saxpy/saxpy.c)         |
+[fortran](saxpy/saxpy.f90) |
+[omp](saxpy/saxpy_omp.f90) |
+[mpi](saxpy/saxpy_mpi.f90) |
+[cuda](saxpy/saxpy_cuda.c)
 
 ## Integral PI
 
@@ -31,18 +48,11 @@ f(x)=4/(1+x^2)
 la razón de elección de esta función es que su integral entre 0 y 1 es numéricamente
 igual a &pi; y por lo tanto es fácil de corroborar su correcta implementación.
 
-
-## SAXPY
-
-SAXPY es el acrónimo de *Single precisión A times X plus Y* y es una operación 
-ampliamente utilizada como benchmark para comparar performance entre distintas 
-herramientas ya que es una operación que aparece a menudo en problemas de algebra
-lineal y el cálculo numérico. Y consiste tan solo en ejecutar la siguiente operación:
-<center>
-<b>Y</b> = a &times; <b>X</b> + <b>Y</b>
-</center>
-
-donde *a* es un escalar, *X* e *Y* son vectores de longitud "n".
+[c      ](pi/pi.c)       |
+[fortran](pi/pi.f90)     |
+[omp    ](pi/pi_omp.f90) |
+[mpi    ](pi/pi_mpi.f90) |
+[cuda   ](pi/pi_cuda.c)
 
 
 ## Jacobi
