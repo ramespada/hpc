@@ -1,17 +1,17 @@
 ---
 layout: page
-title: Computación de Alta Performance 
+title: Computación de Alto Rendimiento 
 nositetitle: true
 ---
 
 El objetivo de este curso es exponer las bases para el desarrollo de aplicaciones de alta performance, con enfasis en los aspectos prácticos de su programación e implementación.
 
-El curso asume conocimientos previos de programación en C y/o Fortran y uso de Shell en entorno UNIX, por lo que se recomienda tomar [este curso](https://github.com/ramespada/sintaxis) primero. 
+El curso asume conocimientos previos de programación en C y/o Fortran y uso de Shell en entorno UNIX, por lo que se recomienda tomar [este curso](https://ramespada.github.io/sintaxis) primero. 
 
 El foco del curso está puesto en la implementación de programas (en C ó Fortran) que exploten la paralelización de distintos problemas bajo arquitecturas de cómputo de memoria compartida (`openMP`), memoria distribuida (`MPI`) y en aceleradores ó GPUs (`CUDA`, `openACC` y `openCL`). 
 El espíritu es analizar el incremento en la performance (*speedup*) en comparación a sus respectivas versiones seriales, analizar la *escalabilidad* de cada herramienta.
 
-Acá podés encontrár algunas de [aplicaciones](/ejemplos/) que trataremos en el curso.
+Acá podés encontrár algunas de [aplicaciones](./ejemplos/) que trataremos en el curso.
 
 # Programa del curso
 

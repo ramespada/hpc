@@ -383,7 +383,8 @@ input[type=checkbox]:checked ~ .menu-label:after {
 .dropdown-content {
   display: none;
   position: absolute;
-margin: 0px 10px 0px 10px;
+  margin: 0px 10px 0px 10px;
+  min-width:100px;
 }
 
 .dropdown-content a {
