@@ -1,6 +1,6 @@
 ---
 layout: lecture
-date: 2023-03-05
+date: 2023-03-06
 title: openACC
 description: Open Accelerator
 ready: false

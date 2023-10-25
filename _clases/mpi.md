@@ -1,6 +1,6 @@
 ---
 layout: lecture
-date: 2023-03-03
+date: 2023-03-04
 title: MPI
 description: Message Passing Interface.
 ready: true
