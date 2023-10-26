@@ -9,9 +9,9 @@ ready: true
 > Revisemos formas de mejorar la performance de un programa, sin necesidad de usar librerias ó APIs para paralelizar.
 
 Primero repasemos algunos puntos que serán críticos en la performance de un código:
-- Elección del algoritmo: Complejidad (*big-O*): O(1), O(log n), O(n), O(n log n), O(n<sup>2</sup>), O(e<sup>n</sup>)).
-- *Estructuras de datos* a usar: stack, queue, array, linked-list, trees, graph.
-- Operaciones a usar: (`+`,`-`,`*`) > (`/`,`%`,`sqrt`)> Func. transcendentales > `**` 
+- Elección del algoritmo: Complejidad (*big-O*): O(1), O(log n), O(n), O(n log n), etc..
+- *Estructuras de datos* a usar (stack, queue, array, linked-list, trees, graph, etc.).
+- Operaciones a usar: (`+`,`-`,`*`,`/`,`%`,`sqrt`,`**`, etc.)
 - Usar software optimizado (si hay disponible).
 - Hardware: detectar donde está el cuello de botella.
 - Optimizaciones del compilador (se discute con más profundiad abajo).
@@ -66,7 +66,7 @@ enddo
 
 Consideremos ahora como explotar el criterio de *temporal locality*, supongamos que tenemos el siguiente loop:
 
-```fortan
+```fortran
 real :: A(N), B(N), C(N), D(N), Z(N)
 do i=1,n
 	A(i)=A(i)*Z(i)
@@ -74,7 +74,7 @@ do i=1,n
 	C(i)=C(i)+B(i)
 	D(i)=D(i)/3.+C(i)
 	Z(i)=Z(i)*D(i)
-ENDDO
+enddo
 ```
 
 Notar que para cada iteración el elemento `Z(i)` es utilizado en la primer linea, y luego es usado nuevamente después de 3 operaciones. Es posible que el cache almacene este valor mientras que el resto de los elementos que no son usados se descarten.
@@ -159,19 +159,19 @@ El compilador puede realizar distintos tipos de modificaciones en pos de mejorar
 
 Optimizaciones Escalar:
 + Copy propagation
-+ Const folding
-+ Strength reduction
-+ Eliminación subexpresiones comunes
-+ Renombrado de variables
++ Const folding: `a=100;b=200; suma=a+b ` &rarr; `suma=300`
++ Strength reduction `x=y**2;a=b/2.0`     &rarr; `x=y*y;a=b*0.5`
++ Eliminación subexpresiones comunes `d=c*(a/b);e=(a/b)*2` &rarr; `x=a/b;d=c*x;e=x*2.0`
++ Renombrado de variables: `x=y*z; q=r+x*2; x=a+b` &rarr; `x0=y*z; q=r+x0*2; x=a+b`
 
 Opt. Lazos:
-- Loop invariant
-- Loop unrolling
-- Intercambio orden loop
++ Loop invariant: saca de loops operaciones que no dependen del indice.
++ Loop unrolling: 
++ Intercambio orden loop (para explotar *spatial locality*)
 
 Inlining
-- Reemplaza una porción de código por otro equivalente + veloz)
-- Fusion/fision loop
++ Reemplaza una porción de código por otro equivalente + veloz)
++ Fusion/fision loop
 
 ---
 
