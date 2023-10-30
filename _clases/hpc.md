@@ -215,6 +215,12 @@ En general lo que se guarda en el *cache* sigue la idea de que los programas tie
 Para explotar este principio de locality los sistemas usan un sistema interconectado más ancho para acceder a datos e instrucciones. Es decir el acceso a memoria se hace en *bloques*. Estos bloques se conocen como *cache blocks* ó **cache lines**, estos almacenan entre 8/16 veces más información que una ubicación individual de memoria.
 Si bien solemos pensar al cache como un bloque homogeneo, suele tener niveles con distinta velocidad de acceso.
 
+### Mapeo del cache
+Hay distintas formas de asignar a cada ubicación en memoria su correspondiente *cache line*:
++ Mapeo directo
++ Fully associative
++ Set-associative
+
 ### Memoria virtual
 
 ### Paralelismo de bajo nivel
