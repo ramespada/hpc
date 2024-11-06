@@ -205,3 +205,39 @@ donde n puede ser:
 ## Caché
 
 
+
+
+
+
+### Optimización MIT (Bentley Rules)
+
+#### Data structures
++ Packing and enconding: minimizar la representacion de informacion en variables para intentar mover menos memoria.
++ Augmentation: agregar información extra en variables para facilitar operaciones muy frecuentes.
++ Precomputation: usar valores precalculados para evitar calcularlos durante la ejecución.
++ Compile-time initialization: metaprograming. Hacer pogramas que escriban la inicializacion de grandes tablas para tener cosas precomputadas.
++ Caching: guardar valores recientemente calculados para usarlos y no tener que calcularlos de nuevo.
++ Lazy evaluation:
++ Sparsity: Evitar guardar arrays con muchos ceros.
+
+#### Loops          
++ Hoisting: sacar de loops variables que no son funcion del iterador.
++ Sentinels: 
++ Loop unrolling: reducir el numero de iteraciones iterando por grupos. Reduce cache missing.
++ Loop fusion: Fusionar multiples loops que iteran el mismo rango en un unico loop.
++ Eliminate wasted iterations.
+
+#### Logic          
++ Constant folding and propagation: 
++ Common subexpression elimination:
++ Algebraic identities:
++ Short circuiting:
++ Ordering test
++ Creating fast paths
++ Combining tests
+
+#### Functions      
++ Inlining: 
++ Tail-recursion elimination
++ Coarsering recursion
+
